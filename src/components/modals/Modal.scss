@@ -1,0 +1,11 @@
+$color-blue: #0cc0df;
+.btn-primary{
+  color: $color-blue;
+  border-color: $color-blue;
+
+  &:hover {
+    background-color: $color-blue;
+    color: white;
+    border-color: $color-blue;
+  }
+}

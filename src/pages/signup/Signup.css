@@ -1,0 +1,36 @@
+.transition-hover {
+    transition: transform 0.3s ease-in-out;
+}
+
+.transition-hover:hover {
+    transform: translateY(-5px);
+
+
+}
+
+.card {
+    border-radius: 10px;
+    overflow: hidden;
+    border:none
+}
+
+.election_title{
+    text-align: center;
+    font-size: 90px;
+    margin-bottom: 20px;
+    font-weight: bold;
+}
+.container{
+    margin-top: 95px !important;
+}
+
+.title-container{
+    margin-bottom: 80px !important;
+}
+
+.election{
+    text-decoration: none;
+    color:#5CE1E6;
+    font-weight: bold;
+    font-size: 300%;
+}
