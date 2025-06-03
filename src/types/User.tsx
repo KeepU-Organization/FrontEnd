@@ -29,3 +29,24 @@ export interface loginResponse {
     success: boolean;
     message: string;
 }
+export interface AddChildRequest {
+    userId: number;
+    childName: string;
+    childLastName: string;
+    childAge: number;
+}
+export interface AddChildResponse {
+    id: number;
+    code:string;
+    isUsed:boolean;
+    expiresAt: string;
+    userId: number;
+    childName: string;
+    childLastName: string;
+    childAge: number;
+}
+export interface RegisterChildRequest {
+    email: string;
+    password: string;
+    invitationCode: string;
+}

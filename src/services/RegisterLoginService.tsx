@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {CreateParentRequest, loginResponse, userResponse} from "../types/User.tsx";
+import {CreateParentRequest, loginResponse, RegisterChildRequest, userResponse} from "../types/User.tsx";
 
 
 
@@ -24,6 +24,18 @@ export const userService={
             throw error;
         }
     },
+    registerChild: async (childData:RegisterChildRequest): Promise<userResponse> => {
+        try{
+            const response = await apiClient.post<userResponse>('users/register/child', childData);
+            return response.data;
+        }
+        catch (error) {
+            console.log('error registrando usuario: ', error);
+            throw error;
+        }
+    },
+
+
     login: async (email: string, password: string): Promise<loginResponse> => {
         try {
             const response = await apiClient.post<loginResponse>('auth/login', { email, password });

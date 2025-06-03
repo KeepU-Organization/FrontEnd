@@ -56,7 +56,6 @@ const AdultSign = () => {
 
         } catch(error: unknown) {
             console.log('error en el registro: ', error);
-
             if (error && typeof error === 'object' && 'response' in error &&
                 error.response && typeof error.response === 'object' && 'data' in error.response) {
 
@@ -141,7 +140,7 @@ const AdultSign = () => {
                             })}
                         />
                         <label htmlFor="email" className="form-label">Email address</label>
-                        <div id="emailHelp" className="form-text">We'll never share your email with anyone else.</div>
+                        <div id="emailHelp" className="form-text">No compartiremos tu email con nadie más.</div>
                         {errors.email && (
                             <div className="invalid-feedback">{errors.email.message}</div>
                         )}
