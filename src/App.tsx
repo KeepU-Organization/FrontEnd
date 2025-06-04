@@ -12,10 +12,12 @@ import ChildrenSign from "./pages/signup/children/ChildrenSign.tsx";
 import AdultSign from "./pages/signup/adults/AdultSign.tsx";
 import AuthCode from "./pages/Authcode/AuthCode.tsx";
 import {AuthProvider} from "./context/AuthContext.tsx";
-import {AuthRoute, PrivateRoute, PublicRoute} from './components/PrivateRoute.tsx';
+import {AuthRoute, PrivateRouteChildren, PrivateRouteParent, PublicRoute} from './components/PrivateRoute.tsx';
 import HomeParent from "./pages/loggedParent/home/HomeParent.tsx";
 import HomeChildren from "./pages/loggedChildren/home/HomeChildren.tsx";
 import Login from "./pages/Login/Login.tsx";
+import {WalletProvider} from "./context/WalletContext.tsx";
+import ParentHistory from "./pages/loggedParent/history/ParentHistory.tsx";
 
 
 
@@ -24,7 +26,7 @@ const App: React.FC = () => {
     return (
         <React.StrictMode>
             <AuthProvider>
-
+                <WalletProvider>
                 <ThemeProvider>
                     <BrowserRouter>
                         <Navbar />
@@ -63,14 +65,21 @@ const App: React.FC = () => {
 
                             {/* Otras rutas privadas */}
                             <Route path="/homeParent" element={
-                                <PrivateRoute>
+                                <PrivateRouteParent>
                                     <HomeParent />
-                                </PrivateRoute>
+                                </PrivateRouteParent>
                             } />
+                            <Route path="/parentHistory" element={
+                                <PrivateRouteParent>
+                                    <ParentHistory></ParentHistory>
+                                </PrivateRouteParent>
+                            }></Route>
+
+
                             <Route path="/homeChildren" element={
-                                <PrivateRoute>
+                                <PrivateRouteChildren>
                                     <HomeChildren />
-                                </PrivateRoute>
+                                </PrivateRouteChildren>
                             } />
 
                         </Routes>
@@ -82,6 +91,7 @@ const App: React.FC = () => {
 
                     </BrowserRouter>
                 </ThemeProvider>
+                </WalletProvider>
             </AuthProvider>
         </React.StrictMode>
     )

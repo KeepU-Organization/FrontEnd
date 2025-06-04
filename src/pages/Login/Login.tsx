@@ -106,6 +106,11 @@ const Login = () => {
                         <label htmlFor="password" className="form-label">Contraseña</label>
                     </div>
 
+                    {apiError && (
+                        <div className="alert alert-danger" role="alert">
+                            {apiError}
+                        </div>
+                    )}
 
                     <div className="d-flex justify-content-between align-items-center mt-4">
                         <Link to="/">
@@ -115,11 +120,6 @@ const Login = () => {
 
 
 
-                        {apiError && (
-                            <div className="alert alert-danger" role="alert">
-                                {apiError}
-                            </div>
-                        )}
 
                     </div>
                 </form>
