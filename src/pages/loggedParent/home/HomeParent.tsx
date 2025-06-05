@@ -35,6 +35,7 @@ const HomeParent = () => {
     const [showDepositModal, setShowDepositModal] = useState(false);
     const [data, setData] = useState<Transaction[]>([]);
     const [groupBy, setGroupBy] = useState<Grouping>('day');
+    const [refreshTrigger, setRefreshTrigger] = useState(0);
 
     const toggleAmountVisibility = () => {
         setShowAmount(!showAmount);
@@ -57,27 +58,31 @@ const HomeParent = () => {
         setShowDepositModal(false);
         // Recargar wallets cuando se cierra el modal
         refreshWallets();
+        setRefreshTrigger(prev => prev + 1);
     }
 
     //GRAFICOS:
+
     useEffect(() => {
         const fetchData = async () => {
-            const data = await ParentHistoryService.getParentHistory(walletId);
+            if (walletId) {  // Verificamos que haya un walletId válido
+                const data = await ParentHistoryService.getParentHistory(walletId);
 
-            const transformedData: Transaction[] = data.map((item: TransactionResponse, index: number) => ({
-                id: (index + 1).toString(),
-                amount: item.amount,
-                description: item.description,
-                type: item.transactionType,
-                date: item.transactionDate,
-                walletId: item.walletId,
-                walletName: item.walletName || 'Billetera principal' // Valor por defecto si no existe
-            }));
+                const transformedData: Transaction[] = data.map((item: TransactionResponse, index: number) => ({
+                    id: (index + 1).toString(),
+                    amount: item.amount,
+                    description: item.description,
+                    type: item.transactionType,
+                    date: item.transactionDate,
+                    walletId: item.walletId,
+                    walletName: item.walletName || 'Billetera principal'
+                }));
 
-            setData(transformedData);
+                setData(transformedData);
+            }
         };
         fetchData();
-    }, [walletId]);
+    }, [walletId, refreshTrigger]);
 
     const formatDate = (dateStr: string) => {
         const d = new Date(dateStr);

@@ -9,12 +9,18 @@ export interface WalletContextType {
     isLoading: boolean;
     error: string | null;
     refreshWallets: () => Promise<void>;
+    fetchChildrenWallets: (childId: number) => Promise<void>;
+    childWallets:WalletResponse[];
 }
+
+// En el defaultWalletContext
 const defaultWalletContext: WalletContextType = {
     wallets: [],
     isLoading: true,
     error: null,
     refreshWallets: async () => {},
+    fetchChildrenWallets: async () => {},
+    childWallets: [],
 };
 export const WalletContext = createContext<WalletContextType>(defaultWalletContext);
 
@@ -25,6 +31,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     const [wallets, setWallets] = useState<WalletResponse[]>([]);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    const [childWallets, setChildWallets] = useState<WalletResponse[]>([]);
 
     const {user}= useAuth();
 
@@ -46,6 +53,26 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
             setIsLoading(false);
         }
     };
+    const fetchChildrenWallets = async (childId: number) => {
+        setIsLoading(true);
+        try {
+            if (isNaN(childId)) {
+                throw new Error('ID de hijo inválido');
+            }
+
+            const response = await walletService.getWalletByUserId(childId);
+            if (response) {
+                setChildWallets([response]);
+            } else {
+                setError('No se encontraron wallets para el usuario');
+            }
+        } catch (err) {
+            console.error('Error al cargar wallets del hijo:', err);
+            setError('Error al cargar las wallets');
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     useEffect(() => {
         fetchWallets();
@@ -56,7 +83,9 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
             wallets,
             isLoading,
             error,
-            refreshWallets: fetchWallets
+            refreshWallets: fetchWallets,
+            fetchChildrenWallets: fetchChildrenWallets,
+            childWallets
         }}>
             {children}
         </WalletContext.Provider>

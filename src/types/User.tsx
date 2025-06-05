@@ -50,3 +50,10 @@ export interface RegisterChildRequest {
     password: string;
     invitationCode: string;
 }
+export interface ChildSummary{
+    id:number;
+     name:string;
+     lastName:string;
+     emai:string;
+    age:number;
+}

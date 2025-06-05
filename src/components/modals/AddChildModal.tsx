@@ -156,126 +156,183 @@ const AddChildModal = ({ id, title, show = false, onClose }: ModalProps) => {
             ref={modalRef}
         >
             <div className="modal-dialog modal-dialog-centered">
-                <div className="modal-content">
-                    {/* Header sin cambios */}
-                    <div className="modal-header">
-                        <h5 className="modal-title" id={`${id}-label`}>{title}</h5>
+                <div className="modal-content border-0 shadow-lg">
+                    <div className="modal-header bg-primary bg-gradient text-white">
+                        <h5 className="modal-title fw-bold" id={`${id}-label`}>
+                            <i className="bi bi-person-plus-fill me-2"></i>{title}
+                        </h5>
                         <button
                             type="button"
-                            className="btn-close"
+                            className="btn-close btn-close-white"
                             data-bs-dismiss="modal"
                             aria-label="Close"
                         ></button>
                     </div>
-                    <div className="modal-body">
+                    <div className="modal-body p-4">
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            {/* Campos del formulario sin cambios */}
-                            <div className="mb-3">
-                                <label htmlFor="childName" className="form-label">Nombre del hijo</label>
-                                <input
-                                    type="text"
-                                    className={`form-control ${errors.childName ? 'is-invalid' : ''}`}
-                                    id="childName"
-                                    placeholder="Ingrese el nombre del hijo"
-                                    {...register('childName', {
-                                        required: 'El nombre es obligatorio'
-                                    })}
-                                />
-                                {errors.childName && (
-                                    <div className="invalid-feedback">{errors.childName.message}</div>
-                                )}
-                            </div>
-                            <div className="mb-3">
-                                <label htmlFor="childLastName" className="form-label">Apellidos del hijo</label>
-                                <input
-                                    type="text"
-                                    className={`form-control ${errors.childLastName ? 'is-invalid' : ''}`}
-                                    id="childLastName"
-                                    placeholder="Ingrese el apellido del hijo"
-                                    {...register('childLastName', {
-                                        required: 'El apellido es obligatorio'
-                                    })}
-                                />
-                                {errors.childLastName && (
-                                    <div className="invalid-feedback">{errors.childLastName.message}</div>
-                                )}
-                            </div>
-                            <div className="mb-3">
-                                <label htmlFor="childAge" className="form-label">Edad del hijo</label>
-                                <input
-                                    type="number"
-                                    className={`form-control ${errors.childAge ? 'is-invalid' : ''}`}
-                                    id="childAge"
-                                    placeholder="Ingrese la edad del hijo"
-                                    {...register('childAge', {
-                                        required: 'La edad es obligatoria',
-                                        min: {
-                                            value: 1,
-                                            message: 'La edad debe ser mayor a 0'
-                                        }
-                                    })}
-                                />
-                                {errors.childAge && (
-                                    <div className="invalid-feedback">{errors.childAge.message}</div>
-                                )}
+                            <div className="card mb-4 bg-light border-0">
+                                <div className="card-body p-3">
+                                    <h6 className="card-subtitle mb-3 text-muted">
+                                        <i className="bi bi-info-circle me-2"></i>Información del hijo
+                                    </h6>
+
+                                    <div className="mb-3">
+                                        <label htmlFor="childName" className="form-label">Nombre del hijo</label>
+                                        <div className="input-group">
+                                            <span className="input-group-text bg-white border-0 shadow-sm">
+                                                <i className="bi bi-person"></i>
+                                            </span>
+                                            <input
+                                                type="text"
+                                                className={`form-control border-0 shadow-sm ${errors.childName ? 'is-invalid' : ''}`}
+                                                id="childName"
+                                                placeholder="Ingrese el nombre del hijo"
+                                                {...register('childName', {
+                                                    required: 'El nombre es obligatorio'
+                                                })}
+                                            />
+                                        </div>
+                                        {errors.childName && (
+                                            <div className="invalid-feedback d-block">
+                                                <i className="bi bi-exclamation-triangle me-1"></i>
+                                                {errors.childName.message}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <label htmlFor="childLastName" className="form-label">Apellidos del hijo</label>
+                                        <div className="input-group">
+                                            <span className="input-group-text bg-white border-0 shadow-sm">
+                                                <i className="bi bi-person-badge"></i>
+                                            </span>
+                                            <input
+                                                type="text"
+                                                className={`form-control border-0 shadow-sm ${errors.childLastName ? 'is-invalid' : ''}`}
+                                                id="childLastName"
+                                                placeholder="Ingrese el apellido del hijo"
+                                                {...register('childLastName', {
+                                                    required: 'El apellido es obligatorio'
+                                                })}
+                                            />
+                                        </div>
+                                        {errors.childLastName && (
+                                            <div className="invalid-feedback d-block">
+                                                <i className="bi bi-exclamation-triangle me-1"></i>
+                                                {errors.childLastName.message}
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <label htmlFor="childAge" className="form-label">Edad del hijo</label>
+                                        <div className="input-group">
+                                            <span className="input-group-text bg-white border-0 shadow-sm">
+                                                <i className="bi bi-calendar3"></i>
+                                            </span>
+                                            <input
+                                                type="number"
+                                                className={`form-control border-0 shadow-sm ${errors.childAge ? 'is-invalid' : ''}`}
+                                                id="childAge"
+                                                placeholder="Ingrese la edad del hijo"
+                                                {...register('childAge', {
+                                                    required: 'La edad es obligatoria',
+                                                    min: {
+                                                        value: 1,
+                                                        message: 'La edad debe ser mayor a 0'
+                                                    }
+                                                })}
+                                            />
+                                        </div>
+                                        {errors.childAge && (
+                                            <div className="invalid-feedback d-block">
+                                                <i className="bi bi-exclamation-triangle me-1"></i>
+                                                {errors.childAge.message}
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
                             </div>
 
                             {apiError && (
-                                <div className="alert alert-danger" role="alert">
-                                    {apiError}
+                                <div className="alert alert-danger d-flex align-items-center" role="alert">
+                                    <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                                    <div>{apiError}</div>
                                 </div>
                             )}
 
-                            <button
-                                type="submit"
-                                className="btn btn-outline-primary"
-                                disabled={isLoading || timeRemaining > 0}
-                            >
-                                {isLoading
-                                    ? 'Generando código...'
-                                    : timeRemaining > 0
-                                        ? `Espera ${timeRemaining}s`
-                                        : 'Generar nuevo código'}
-                            </button>
+                            {showCode ? (
+                                <div className="card mt-4 border-0 shadow-sm">
+                                    <div className="card-body p-4">
+                                        <div className="d-flex justify-content-between align-items-center mb-3">
+                                            <h5 className="m-0 text-primary">
+                                                <i className="bi bi-qr-code me-2"></i>
+                                                Código de invitación
+                                            </h5>
+                                            <button
+                                                type="button"
+                                                className={`btn btn-sm ${copied ? 'btn-success' : 'btn-outline-primary'}`}
+                                                onClick={copyToClipboard}
+                                            >
+                                                <i className={`bi ${copied ? 'bi-check-lg' : 'bi-clipboard'} me-1`}></i>
+                                                {copied ? 'Copiado' : 'Copiar código'}
+                                            </button>
+                                        </div>
 
-                            {showCode && (
-                                <div className="mt-4">
-                                    <div className="d-flex justify-content-between align-items-center mb-2">
-                                        <h5 className="m-0">Código de invitación:</h5>
-                                        <button
-                                            type="button"
-                                            className="btn btn-sm btn-outline-secondary"
-                                            onClick={copyToClipboard}
-                                        >
-                                            {copied ? '¡Copiado!' : 'Copiar código'}
-                                        </button>
+                                        <div className="d-flex justify-content-center align-items-center my-3">
+                                            {[...code].map((digit, index) => (
+                                                <div
+                                                    key={index}
+                                                    className="bg-light rounded shadow-sm mx-1 d-flex justify-content-center align-items-center"
+                                                    style={{
+                                                        width: '3.5rem',
+                                                        height: '4rem',
+                                                    }}
+                                                >
+                                                    <span className="fs-2 fw-bold text-primary">{digit}</span>
+                                                </div>
+                                            ))}
+                                        </div>
+
+                                        <div className="text-center text-muted">
+                                            <small>
+                                                <i className="bi bi-clock me-1"></i>
+                                                El código expirará en {timeRemaining} segundos
+                                            </small>
+                                        </div>
                                     </div>
-
-                                    {/* Visualización del código como cuadros */}
-                                    <div className="d-flex justify-content-center align-items-center mb-2">
-                                        {[...code].map((digit, index) => (
-                                            <input
-                                                key={index}
-                                                type="text"
-                                                maxLength={1}
-                                                className="form-control text-center mx-1"
-                                                style={{
-                                                    width: '3rem',
-                                                    height: '3rem',
-                                                    fontSize: '1.5rem',
-                                                    fontWeight: 'bold'
-                                                }}
-                                                value={digit}
-                                                readOnly
-                                                ref={el => {
-                                                    if (el) {
-                                                        inputRefs.current[index] = el;
-                                                    }
-                                                }}
-                                            />
-                                        ))}
-                                    </div>
-
+                                </div>
+                            ) : (
+                                <div className="d-grid gap-2 mt-4">
+                                    <button
+                                        type="submit"
+                                        className="btn btn-primary btn-lg"
+                                        disabled={isLoading || timeRemaining > 0}
+                                    >
+                                        {isLoading ? (
+                                            <>
+                                                <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                                Generando código...
+                                            </>
+                                        ) : timeRemaining > 0 ? (
+                                            <>
+                                                <i className="bi bi-hourglass-split me-2"></i>
+                                                Espera {timeRemaining}s
+                                            </>
+                                        ) : (
+                                            <>
+                                                <i className="bi bi-key-fill me-2"></i>
+                                                Generar código de invitación
+                                            </>
+                                        )}
+                                    </button>
+                                    <button
+                                        type="button"
+                                        className="btn btn-outline-secondary"
+                                        data-bs-dismiss="modal"
+                                    >
+                                        Cancelar
+                                    </button>
                                 </div>
                             )}
                         </form>

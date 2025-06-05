@@ -4,3 +4,13 @@ export interface TransactionResponse{
     transactionType:string; // 'deposito, transeferencia
     transactionDate: string;
 }
+export interface CreateTranferRequest {
+    senderWalletId: string;
+    receiverWalletId: string;
+    transactionAmount: number;
+}
+export interface TransferResponse {
+    senderWalletId: string;
+    receiverWalletId: string;
+    transactionAmount: number;
+}

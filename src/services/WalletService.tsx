@@ -1,5 +1,6 @@
 import axios from "axios";
 import {WalletResponse} from "../types/Wallets.tsx";
+import {TransactionResponse} from "../types/Transactions.tsx";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1/';
 
@@ -30,6 +31,19 @@ export const walletService = {
             throw error;
         }
     },
+    transferToChildrenWallet: async (senderWalletId: string, receiverWalletId: string, transactionAmount: number): Promise<TransactionResponse> => {
+        try {
+            const response = await apiClient.post(`wallets/transfer`, {
+                senderWalletId,
+                receiverWalletId,
+                transactionAmount
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error transferring to children wallet:', error);
+            throw error;
+        }
+    }
 //sb-a5alb43311586@personal.example.com
     //3H31yc&y
 }

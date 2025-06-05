@@ -18,6 +18,8 @@ import HomeChildren from "./pages/loggedChildren/home/HomeChildren.tsx";
 import Login from "./pages/Login/Login.tsx";
 import {WalletProvider} from "./context/WalletContext.tsx";
 import ParentHistory from "./pages/loggedParent/history/ParentHistory.tsx";
+import MonitorChildren from "./pages/loggedParent/monitorChildren/MonitorChildren.tsx";
+import Store from "./pages/loggedChildren/store/Store.tsx";
 
 
 
@@ -75,12 +77,27 @@ const App: React.FC = () => {
                                 </PrivateRouteParent>
                             }></Route>
 
+                            <Route path="/childMonitor" element={
+                                <PrivateRouteParent>
+                                    <MonitorChildren></MonitorChildren>
+                                </PrivateRouteParent>
+                            }></Route>
 
+
+
+                            {/* Rutas privadas para hijos */}
                             <Route path="/homeChildren" element={
                                 <PrivateRouteChildren>
                                     <HomeChildren />
                                 </PrivateRouteChildren>
                             } />
+                            <Route path="/store" element={
+                                <PrivateRouteChildren>
+                                    <Store />
+                                </PrivateRouteChildren>
+                            } />
+
+                            {/* Ruta de autenticación */}
 
                         </Routes>
 

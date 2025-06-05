@@ -31,15 +31,21 @@ const ChildrenSign = () => {
 
     const onSubmit = async (data:formData) => {
         setIsLoading(true);
-        try{
-            const response = userService.registerChild({
+        try {
+            // Agregar await aquí para esperar que termine el registro
+            const response = await userService.registerChild({
                 email: data.email,
                 password: data.password,
                 invitationCode: data.invitationCode
             });
-            console.log('respuesta del registro: ', response);
-            await login(data.email, data.password);
 
+            console.log('respuesta del registro: ', response);
+
+            // Agregar un pequeño retraso para asegurar que el backend procese el registro
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            // Intentar iniciar sesión después del registro exitoso
+            await login(data.email, data.password);
         }
         catch(error: unknown) {
             console.log('error en el registro: ', error);
@@ -51,7 +57,6 @@ const ChildrenSign = () => {
                 setApiError(typeof data === 'object' && data && 'message' in data ?
                     data.message as string : 'Error en el registro');
             } else if (error instanceof Error) {
-
                 setApiError(error.message);
             } else {
                 setApiError('Ha ocurrido un error durante el registro');
@@ -191,7 +196,14 @@ const ChildrenSign = () => {
                             <Link to="/signup">
                                 <GrayButton>ATRAS</GrayButton>
                             </Link>
-                            <button type="submit" disabled={isLoading} className="btn btn-primary">Entrar</button>
+                            {
+                                isLoading ? (
+                                    <button className="btn btn-primary" disabled>
+                                        <span className="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        Cargando...
+                                    </button>
+                                ) : <button type="submit" className="btn btn-primary">Entrar</button>
+                            }
                         </div>
                     </form>
                 </div>

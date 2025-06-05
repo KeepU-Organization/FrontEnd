@@ -1,0 +1,25 @@
+.product-card {
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  }
+
+  .card-img-top {
+    height: 200px;
+    object-fit: contain;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+  }
+}
+
+// Estilo para evitar flechas en input number
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
