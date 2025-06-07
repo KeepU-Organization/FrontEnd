@@ -7,6 +7,7 @@ import { useForm } from 'react-hook-form';
 import { walletService } from "../../services/WalletService.tsx";
 import { useWallets } from "../../hooks/UseWallets.tsx";
 import Toast from "../Toast.tsx";
+import {CreateTransferRequest} from "../../types/Transactions.tsx";
 
 interface ModalProps {
     id: string;
@@ -121,10 +122,13 @@ const TransferMoneyModal = ({ id, title, show = false, onClose, childId, childNa
         setApiError(null); // Limpiar errores previos
 
         try {
+            const createTransferRequest:CreateTransferRequest={
+                senderWalletId: wallets[0].walletId,
+                receiverWalletId: selectedWalletId,
+                transactionAmount: data.transactionAmount
+            }
             const response = await walletService.transferToChildrenWallet(
-                wallets[0].walletId,
-                selectedWalletId,
-                data.transactionAmount
+                createTransferRequest
             );
 
             // Mostrar mensaje de éxito con el Toast

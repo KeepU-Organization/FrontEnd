@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { useWallets } from '../../../hooks/UseWallets';
 
 import './Store.scss';
+import {useStores} from "../../../hooks/UseStores.tsx";
+import {UseGiftCards} from "../../../hooks/UseGiftCards.tsx";
+import BuyModal from "../../../components/modals/BuyModal.tsx";
+import {walletService} from "../../../services/WalletService.tsx";
 
 // Interfaces
 interface Product {
@@ -11,8 +15,17 @@ interface Product {
     imageUrl: string;
     description: string;
     stock: number;
-}
+    storeId: number;
+    type:string;
+    link: string;
 
+}
+interface GiftCard {
+    id?: number;
+    storeId: number;
+    amount: number;
+    code?: string;
+}
 const Store: React.FC = () => {
     //const { user } = useAuth();
     const { wallets } = useWallets();
@@ -22,43 +35,95 @@ const Store: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [selectedWallet, setSelectedWallet] = useState<string>('');
     const [quantities, setQuantities] = useState<Record<number, number>>({});
-    const [isLoading, setIsLoading] = useState(true);
+    const [loading, setLoading] = useState(false);
 
-    // Simular carga de productos
+    const [showModal, setShowModal] = useState(false);
+    const {giftcards,fetchGiftCards} = UseGiftCards();
+    const {stores,fetchStores} = useStores();
+    const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+
     useEffect(() => {
-        // Aquí conectarías con tu API real
-        const fetchProducts = async () => {
-            setIsLoading(true);
+        const loadStores = async () => {
+            setLoading(true);
+            if (stores.length === 0) {
+                await fetchStores();
+            }
+        }
+        loadStores();
+    }, [fetchStores]);
+    useEffect(() => {
+        const loadGiftCards = async () => {
+            setLoading(true);
+            if (giftcards.length === 0) {
+                await fetchGiftCards();
+            }
+        }
+        loadGiftCards();
+    }, [fetchGiftCards,giftcards.length]);
+
+    useEffect(() => {
+        const prepareProducts = () => {
+            setLoading(true);
             try {
-                // Simulación de productos
-                const mockProducts: Product[] = [
-                    { id: 1, name: "Cuaderno premium", price: 15.50, imageUrl: "https://placehold.co/300x200/e9f5ff/1a73e8?text=Cuaderno", description: "Cuaderno con 100 hojas de alta calidad", stock: 20 },
-                    { id: 2, name: "Lápices de colores (12)", price: 25.00, imageUrl: "https://placehold.co/300x200/fff5e9/e88c1a?text=Lápices", description: "Set de 12 lápices de colores", stock: 15 },
-                    { id: 3, name: "Mochila escolar", price: 120.00, imageUrl: "https://placehold.co/300x200/f5e9ff/8c1ae8?text=Mochila", description: "Mochila resistente con varios compartimentos", stock: 8 },
-                    { id: 4, name: "Calculadora científica", price: 75.00, imageUrl: "https://placehold.co/300x200/e9fff5/1ae88c?text=Calculadora", description: "Calculadora científica para estudiantes", stock: 12 },
-                    { id: 5, name: "Borrador de goma", price: 3.50, imageUrl: "https://placehold.co/300x200/ffe9e9/e81a1a?text=Borrador", description: "Borrador de alta calidad", stock: 30 },
-                    { id: 6, name: "Estuche escolar", price: 18.90, imageUrl: "https://placehold.co/300x200/e9eaff/1a1ae8?text=Estuche", description: "Estuche con cierre para lápices y bolígrafos", stock: 18 },
-                ];
+                if (stores.length > 0) {
+                    // Agrupar tarjetas por storeId para calcular stock
+                    const giftcardsByStore: Record<string, GiftCard[]> = {};
 
-                setProducts(mockProducts);
-                setFilteredProducts(mockProducts);
+                    giftcards.forEach(giftcard => {
+                        const storeIdKey = String(giftcard.storeId);
+                        if (!giftcardsByStore[storeIdKey]) {
+                            giftcardsByStore[storeIdKey] = [];
+                        }
+                        giftcardsByStore[storeIdKey].push(giftcard);
+                    });
 
-                // Inicializar cantidades en 1
-                const initialQuantities: Record<number, number> = {};
-                mockProducts.forEach(product => {
-                    initialQuantities[product.id] = 1;
-                });
-                setQuantities(initialQuantities);
 
+                    // Crear productos para todas las tiendas
+                    const newProducts: Product[] = [];
+                    let productId = 1;
+
+                    stores.forEach(store => {
+                        const storeIdKey = String(store.id);
+                        // Colores aleatorios para las imágenes
+                        const colors = ['e9f5ff/1a73e8', 'fff5e9/e88c1a', 'f5e9ff/8c1ae8', 'e9fff5/1ae88c', 'ffe9e9/e81a1a'];
+                        const colorIndex = Math.floor(Math.random() * colors.length);
+
+                        // Verificar si hay tarjetas disponibles
+                        const hasStock = giftcardsByStore[storeIdKey] && giftcardsByStore[storeIdKey].length > 0;
+
+                        // Crear producto con o sin stock
+                        newProducts.push({
+                            id: productId++,
+                            name: store.name,
+                            price: hasStock ? parseFloat(String(giftcardsByStore[storeIdKey][0].amount)) : 0,
+                            imageUrl: `https://placehold.co/300x200/${colors[colorIndex]}?text=${encodeURIComponent(store.name)}`,
+                            description: store.location || 'Ubicación no disponible',
+                            stock: hasStock ? giftcardsByStore[storeIdKey].length : 0,
+                            storeId: store.id,
+                            type:store.type,
+                            link:store.link || '#'
+                        });
+                    });
+
+                    setProducts(newProducts);
+                    setFilteredProducts(newProducts);
+
+                    // Inicializar cantidades en 1
+                    const initialQuantities: Record<number, number> = {};
+                    newProducts.forEach(product => {
+                        initialQuantities[product.id] = 1;
+                    });
+                    setQuantities(initialQuantities);
+                }
             } catch (error) {
-                console.error("Error al cargar productos:", error);
+                console.error("Error al preparar productos:", error);
             } finally {
-                setIsLoading(false);
+                setLoading(false);
             }
         };
 
-        fetchProducts();
-    }, []);
+        prepareProducts();
+    }, [stores, giftcards]);
 
     // Establecer billetera predeterminada
     useEffect(() => {
@@ -86,15 +151,40 @@ const Store: React.FC = () => {
     };
 
     // Manejar compra de producto
-    const handleBuyProduct = (product: Product) => {
+    const handleBuyProduct = async (product: Product):Promise<boolean> => {
         const quantity = quantities[product.id];
         const totalPrice = product.price * quantity;
 
-        // Aquí conectarías con tu API para realizar la compra
-        console.log(`Comprando ${quantity} unidades de ${product.name} por S/.${totalPrice.toFixed(2)}`);
+        if (getSelectedWalletBalance() < totalPrice) {
+            return false;
+        }
+        if (product.stock === 0) {
+            return false;
+        }
+        try {
 
-        // Mostrar un toast de confirmación (puedes implementar esto según tu sistema de notificaciones)
-        alert(`¡Compra realizada! ${quantity} unidades de ${product.name} por S/.${totalPrice.toFixed(2)}`);
+            console.log(`Comprando ${quantity} de ${product.name} por S/.${totalPrice.toFixed(2)} usando la billetera ${selectedWallet}`);
+
+            await walletService.purchaseGiftCard({
+                walletId: selectedWallet,
+                storeId: product.storeId,
+                quantity: quantity,
+                amount: totalPrice
+            });
+            
+            // Actualizar el stock del producto
+            setProducts(prevProducts =>
+                prevProducts.map(p =>
+                    p.id === product.id ? { ...p, stock: p.stock - quantity } : p
+                )
+            );
+
+        } catch(error) {
+            console.error("Error al comprar el producto:", error);
+            alert('Error al procesar la compra. Inténtalo de nuevo más tarde.');
+            return false;
+        }
+        return true;
     };
 
     // Obtener saldo de la billetera seleccionada
@@ -151,7 +241,7 @@ const Store: React.FC = () => {
             </div>
 
             {/* Catálogo de productos */}
-            {isLoading ? (
+            {loading ? (
                 <div className="text-center my-5">
                     <div className="spinner-border text-primary" role="status">
                         <span className="visually-hidden">Cargando...</span>
@@ -160,73 +250,101 @@ const Store: React.FC = () => {
                 </div>
             ) : (
                 <div className="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
-                    {filteredProducts.length > 0 ? (
-                        filteredProducts.map(product => (
-                            <div key={product.id} className="col">
-                                <div className="card h-100 border-0 shadow-sm product-card">
-                                    <img
-                                        src={product.imageUrl}
-                                        className="card-img-top p-3"
-                                        alt={product.name}
-                                    />
-                                    <div className="card-body">
-                                        <h5 className="card-title fw-bold">{product.name}</h5>
-                                        <p className="card-text text-muted small">{product.description}</p>
-                                        <div className="d-flex justify-content-between align-items-center mt-3">
-                                            <div className="input-group input-group-sm" style={{ maxWidth: '120px' }}>
-                                                <button
-                                                    className="btn btn-outline-secondary border-0"
-                                                    type="button"
-                                                    onClick={() => handleQuantityChange(product.id, quantities[product.id] - 1)}
-                                                    disabled={quantities[product.id] <= 1}
-                                                >
-                                                    <i className="bi bi-dash"></i>
-                                                </button>
-                                                <input
-                                                    type="number"
-                                                    className="form-control text-center border-0 bg-light"
-                                                    value={quantities[product.id]}
-                                                    onChange={(e) => handleQuantityChange(product.id, parseInt(e.target.value) || 1)}
-                                                    min="1"
-                                                    max={product.stock}
-                                                />
-                                                <button
-                                                    className="btn btn-outline-secondary border-0"
-                                                    type="button"
-                                                    onClick={() => handleQuantityChange(product.id, quantities[product.id] + 1)}
-                                                    disabled={quantities[product.id] >= product.stock}
-                                                >
-                                                    <i className="bi bi-plus"></i>
-                                                </button>
-                                            </div>
-                                            <h5 className="text-primary mb-0">S/.{product.price.toFixed(2)}</h5>
-                                        </div>
+                    {filteredProducts.map(product => (
+                        <div key={product.id} className="col">
+                            <div className={`card h-100 border-0 shadow-sm product-card ${product.stock === 0 ? 'product-unavailable' : ''}`}>
+                                <img
+                                    src={product.imageUrl}
+                                    className="card-img-top p-3"
+                                    alt={product.name}
+                                    onClick={()=> window.open(product.link, '_blank')}
+                                />
+                                {product.stock === 0 && (
+                                    <div className="unavailable-overlay">
+                                        <span className="badge bg-danger">No disponible</span>
                                     </div>
-                                    <div className="card-footer bg-white border-0 p-3">
-                                        <button
-                                            className="btn btn-primary w-100"
-                                            onClick={() => handleBuyProduct(product)}
-                                            disabled={getSelectedWalletBalance() < product.price * quantities[product.id]}
-                                        >
-                                            <i className="bi bi-cart-plus me-2"></i>
-                                            Comprar
-                                        </button>
+                                )}
+                                <div className="card-body">
+                                    <h5 className="card-title fw-bold">{product.name} Giftcard</h5>
+                                    <p className="card-text text-muted small">{product.description}</p>
+                                    <div className="d-flex justify-content-between align-items-center mt-3">
+                                        <div className="input-group input-group-sm" style={{ maxWidth: '120px' }}>
+                                            <button
+                                                className="btn btn-outline-secondary border-0"
+                                                type="button"
+                                                onClick={() => handleQuantityChange(product.id, quantities[product.id] - 1)}
+                                                disabled={quantities[product.id] <= 1 || product.stock === 0}
+                                            >
+                                                <i className="bi bi-dash"></i>
+                                            </button>
+                                            <input
+                                                type="number"
+                                                className="form-control text-center border-0 bg-light"
+                                                value={quantities[product.id]}
+                                                onChange={(e) => handleQuantityChange(product.id, parseInt(e.target.value) || 1)}
+                                                min="1"
+                                                max={product.stock}
+                                                disabled={product.stock === 0}
+                                            />
+                                            <button
+                                                className="btn btn-outline-secondary border-0"
+                                                type="button"
+                                                onClick={() => handleQuantityChange(product.id, quantities[product.id] + 1)}
+                                                disabled={quantities[product.id] >= product.stock || product.stock === 0}
+                                            >
+                                                <i className="bi bi-plus"></i>
+                                            </button>
+                                        </div>
+                                        <h5 className="text-primary mb-0">
+                                            {product.stock > 0 ? `S/.${product.price.toFixed(2)}` : '--'}
+                                        </h5>
                                     </div>
                                 </div>
+                                <div className="card-footer bg-white border-0 p-3">
+                                    <button
+                                        className="btn btn-primary w-100"
+                                        onClick={() => {
+                                            setSelectedProduct(product);
+                                            setShowModal(true);
+                                        }}
+                                        disabled={product.stock === 0 || getSelectedWalletBalance() < product.price * quantities[product.id]}
+                                    >
+                                        {product.stock === 0 ? (
+                                            <>
+                                                <i className="bi bi-x-circle me-2"></i>
+                                                Agotado
+                                            </>
+                                        ) : (
+                                            <>
+                                                <i className="bi bi-cart-plus me-2"></i>
+                                                Comprar
+                                            </>
+                                        )}
+                                    </button>
+                                    {(getSelectedWalletBalance() < product.price * quantities[product.id])?
+                                    <div className="text-danger small mt-2"> Saldo infuficiente</div>:
+                                        <></>
+                                    }
+
+
+                                </div>
                             </div>
-                        ))
-                    ) : (
-                        <div className="col-12 text-center my-5">
-                            <i className="bi bi-search fs-1 text-muted"></i>
-                            <p className="mt-3">No se encontraron productos que coincidan con "{searchTerm}"</p>
-                            <button
-                                className="btn btn-outline-primary mt-2"
-                                onClick={() => setSearchTerm('')}
-                            >
-                                Ver todos los productos
-                            </button>
+                            {selectedProduct && (
+                                <BuyModal
+                                    onConfirm={() => handleBuyProduct(selectedProduct)}
+                                    isOpen={showModal}
+                                    onClose={() => {
+                                        setShowModal(false);
+                                        setSelectedProduct(null);
+                                    }}
+                                    productName={selectedProduct.name}
+                                    quantity={quantities[selectedProduct.id]}
+                                    totalPrice={selectedProduct.price * quantities[selectedProduct.id]}
+                                />
+                            )}
                         </div>
-                    )}
+
+                    ))}
                 </div>
             )}
         </div>

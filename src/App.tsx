@@ -20,6 +20,9 @@ import {WalletProvider} from "./context/WalletContext.tsx";
 import ParentHistory from "./pages/loggedParent/history/ParentHistory.tsx";
 import MonitorChildren from "./pages/loggedParent/monitorChildren/MonitorChildren.tsx";
 import Store from "./pages/loggedChildren/store/Store.tsx";
+import {StoreContextProvider} from "./context/StoreContext.tsx";
+import {GiftCardContextProvider} from "./context/GIftCardsContext.tsx";
+import ChildHistory from "./pages/loggedChildren/history/ChildHistory.tsx";
 
 
 
@@ -29,6 +32,9 @@ const App: React.FC = () => {
         <React.StrictMode>
             <AuthProvider>
                 <WalletProvider>
+                    <StoreContextProvider>
+                        <GiftCardContextProvider>
+
                 <ThemeProvider>
                     <BrowserRouter>
                         <Navbar />
@@ -96,6 +102,11 @@ const App: React.FC = () => {
                                     <Store />
                                 </PrivateRouteChildren>
                             } />
+                            <Route path="/childHistory" element={
+                                <PrivateRouteChildren>
+                                    <ChildHistory></ChildHistory>
+                                </PrivateRouteChildren>
+                            }></Route>
 
                             {/* Ruta de autenticación */}
 
@@ -108,6 +119,10 @@ const App: React.FC = () => {
 
                     </BrowserRouter>
                 </ThemeProvider>
+
+
+                        </GiftCardContextProvider>
+                    </StoreContextProvider>
                 </WalletProvider>
             </AuthProvider>
         </React.StrictMode>

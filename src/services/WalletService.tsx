@@ -1,6 +1,7 @@
 import axios from "axios";
 import {WalletResponse} from "../types/Wallets.tsx";
-import {TransactionResponse} from "../types/Transactions.tsx";
+import { CreateTransferRequest, TransactionResponse} from "../types/Transactions.tsx";
+import {CreateShopRequest, ShopResponse} from "../types/Shop.tsx";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1/';
 
@@ -31,16 +32,30 @@ export const walletService = {
             throw error;
         }
     },
-    transferToChildrenWallet: async (senderWalletId: string, receiverWalletId: string, transactionAmount: number): Promise<TransactionResponse> => {
+    transferToChildrenWallet: async (request:CreateTransferRequest): Promise<TransactionResponse> => {
         try {
             const response = await apiClient.post(`wallets/transfer`, {
-                senderWalletId,
-                receiverWalletId,
-                transactionAmount
+                senderWalletId: request.senderWalletId,
+                receiverWalletId:request.receiverWalletId,
+                transactionAmount:request.transactionAmount
             });
             return response.data;
         } catch (error) {
             console.error('Error transferring to children wallet:', error);
+            throw error;
+        }
+    },
+    purchaseGiftCard: async(request:CreateShopRequest): Promise<ShopResponse> => {
+        try {
+            const response = await apiClient.post(`wallets/purchase-gift-card`, {
+                walletId: request.walletId,
+                storeId: request.storeId,
+                quantity: request.quantity,
+                totalPrice: request.amount
+            });
+            return response.data;
+        } catch (error) {
+            console.error('Error purchasing gift card:', error);
             throw error;
         }
     }

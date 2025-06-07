@@ -1,4 +1,4 @@
-import {createContext, useEffect, useState} from "react";
+import {createContext, useCallback, useEffect, useState} from "react";
 import {useAuth} from "../hooks/UseAuth.tsx";
 import {walletService} from "../services/WalletService.tsx";
 import {WalletResponse} from "../types/Wallets.tsx";
@@ -33,13 +33,14 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
     const [error, setError] = useState<string | null>(null);
     const [childWallets, setChildWallets] = useState<WalletResponse[]>([]);
 
-    const {user}= useAuth();
+    const {user} = useAuth();
 
-    const fetchWallets = async () => {
+    // Usar useCallback para evitar recrear la función en cada renderizado
+    const fetchWallets = useCallback(async () => {
         setIsLoading(true);
         try {
             if (user){
-                const response = await walletService.getWalletByUserId(user?.id);
+                const response = await walletService.getWalletByUserId(user.id);
                 if (response) {
                     setWallets([response]);
                 } else {
@@ -52,8 +53,9 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
         } finally {
             setIsLoading(false);
         }
-    };
-    const fetchChildrenWallets = async (childId: number) => {
+    }, [user]); // Dependencia explícita en user
+
+    const fetchChildrenWallets = useCallback(async (childId: number) => {
         setIsLoading(true);
         try {
             if (isNaN(childId)) {
@@ -72,11 +74,13 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []); // No depende de variables externas
 
     useEffect(() => {
-        fetchWallets();
-    }, [user]);
+        if (user) {
+            fetchWallets();
+        }
+    }, [fetchWallets]); // Dependemos de fetchWallets que ya incluye user
 
     return (
         <WalletContext.Provider value={{
@@ -84,7 +88,7 @@ export const WalletProvider: React.FC<WalletProviderProps> = ({ children }) => {
             isLoading,
             error,
             refreshWallets: fetchWallets,
-            fetchChildrenWallets: fetchChildrenWallets,
+            fetchChildrenWallets,
             childWallets
         }}>
             {children}

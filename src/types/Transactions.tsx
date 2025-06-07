@@ -3,8 +3,11 @@ export interface TransactionResponse{
     description: string;
     transactionType:string; // 'deposito, transeferencia
     transactionDate: string;
+    giftCardCode:string;
+    storeName:string;
+    storeType:string;
 }
-export interface CreateTranferRequest {
+export interface CreateTransferRequest {
     senderWalletId: string;
     receiverWalletId: string;
     transactionAmount: number;

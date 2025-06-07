@@ -24,11 +24,9 @@ const AddChildModal = ({ id, title, show = false, onClose }: ModalProps) => {
     const modalInstanceRef = useRef<BSModal | null>(null);
     const [isLoading, setIsLoading] = useState(false);
     const {user} = useAuth();
-
     const [apiError, setApiError] = useState<string | null>(null);
     const [showCode, setShowCode] = useState(false);
     const [code, setCode] = useState('');
-    const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
     const [timeRemaining, setTimeRemaining] = useState<number>(0);
     const [copied, setCopied] = useState(false);
 
@@ -297,7 +295,7 @@ const AddChildModal = ({ id, title, show = false, onClose }: ModalProps) => {
                                         <div className="text-center text-muted">
                                             <small>
                                                 <i className="bi bi-clock me-1"></i>
-                                                El código expirará en {timeRemaining} segundos
+                                                Podrás pedir otro código en {timeRemaining} segundos
                                             </small>
                                         </div>
                                     </div>

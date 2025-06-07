@@ -231,7 +231,7 @@ const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
                         <TransferMoney
                             id={'childTransfer'}
                             title={"Transferencia"}
-                            childId={selectedChildId.toString()}
+                            childId={selectedChildId}
                             childName={children.find(child => child.id === selectedChildId)?.name}
                             show={true}
                             onClose={() => setSelectedChildId(null)}
