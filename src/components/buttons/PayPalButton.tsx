@@ -37,13 +37,20 @@ declare global {
 }
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1/';
 
+
 const apiClient=axios.create({
   baseURL: API_BASE_URL,
   headers:{
-    'Accept': 'application/json',
+    'Accept': 'application/json'
   }
 })
-
+const getHeaders = () => {
+  const token = localStorage.getItem('authToken');
+  return {
+    'Accept': 'application/json',
+    'Authorization': token ? `Bearer ${token}` : ''
+  };
+};
 
 const PayPalButton = ({ walletId, amount,onPaymentError,onPaymentSuccess }:
                       { walletId: string; amount: number,onPaymentError?: (message: string) => void; onPaymentSuccess?: () => void; } ) => {
@@ -79,7 +86,8 @@ const PayPalButton = ({ walletId, amount,onPaymentError,onPaymentSuccess }:
           const res = await apiClient.post("paypal/create-order", {
             amount: amount,
             walletId: walletId,
-          });
+          },
+              { headers: getHeaders() });
           return res.data.orderId;
         } catch (error) {
           if (axios.isAxiosError(error) && error.response?.data?.message) {

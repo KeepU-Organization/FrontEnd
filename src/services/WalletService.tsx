@@ -8,14 +8,24 @@ const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/
 const apiClient=axios.create({
     baseURL: API_BASE_URL,
     headers:{
-        'Accept': 'application/json',
+        'Accept': 'application/json'
     }
 })
+
+const getHeaders = () => {
+    const token = localStorage.getItem('authToken');
+    return {
+        'Accept': 'application/json',
+        'Authorization': token ? `Bearer ${token}` : ''
+    };
+};
 
 export const walletService = {
     getWalletByUserId: async (userId: number): Promise<WalletResponse> => {
         try {
-            const response = await apiClient.get(`wallets/user/${userId}`);
+            const response = await apiClient.get(`wallets/user/${userId}`, {
+                headers: getHeaders()
+            });
             return response.data;
         } catch (error) {
             console.error('Error fetching wallet:', error);
@@ -25,7 +35,10 @@ export const walletService = {
 
     depositToWallet: async ( orderId: string,walletId: string): Promise<WalletResponse> => {
         try {
-            const response = await apiClient.put(`wallets/deposit`, { orderId, walletId });
+            const response = await apiClient.put(`wallets/deposit`,
+                { orderId, walletId },
+                { headers: getHeaders() }
+            );
             return response.data;
         } catch (error) {
             console.error('Error depositing to wallet:', error);
@@ -38,7 +51,8 @@ export const walletService = {
                 senderWalletId: request.senderWalletId,
                 receiverWalletId:request.receiverWalletId,
                 transactionAmount:request.transactionAmount
-            });
+            },
+                { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error('Error transferring to children wallet:', error);
@@ -52,7 +66,8 @@ export const walletService = {
                 storeId: request.storeId,
                 quantity: request.quantity,
                 totalPrice: request.amount
-            });
+            },
+                { headers: getHeaders() });
             return response.data;
         } catch (error) {
             console.error('Error purchasing gift card:', error);

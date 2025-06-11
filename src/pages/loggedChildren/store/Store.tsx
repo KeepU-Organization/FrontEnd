@@ -28,7 +28,7 @@ interface GiftCard {
 }
 const Store: React.FC = () => {
     //const { user } = useAuth();
-    const { wallets } = useWallets();
+    const { wallets,refreshWallets } = useWallets();
 
     const [products, setProducts] = useState<Product[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -336,6 +336,9 @@ const Store: React.FC = () => {
                                     onClose={() => {
                                         setShowModal(false);
                                         setSelectedProduct(null);
+                                        refreshWallets();  // Agregar paréntesis para ejecutar la función
+                                        fetchGiftCards();  // Agregar paréntesis para ejecutar la función
+                                        fetchStores();     // Agregar paréntesis para ejecutar la función
                                     }}
                                     productName={selectedProduct.name}
                                     quantity={quantities[selectedProduct.id]}

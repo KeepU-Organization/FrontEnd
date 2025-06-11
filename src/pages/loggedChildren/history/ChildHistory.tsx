@@ -129,9 +129,11 @@ const ChildHistory: React.FC = () => {
 
     const getTransactionBadgeClass = (type: string) => {
         // Convertir a mayúsculas para asegurar la comparación
-        const storeType = type.toUpperCase();
+        if (!type) {
+            return 'bg-secondary text-white';
+        }
 
-        switch (storeType) {
+        switch (type) {
             case 'GAMING':
                 return 'bg-purple';
             case 'CLOTHING':
@@ -154,6 +156,10 @@ const ChildHistory: React.FC = () => {
     };
 
     const getCardBorderClass = (type: string) => {
+
+        if (!type) {
+            return 'border-secondary';
+        }
         switch (type) {
             case 'GAMING':
                 return 'border-purple';
@@ -361,7 +367,7 @@ const ChildHistory: React.FC = () => {
                                                     <div className="d-flex justify-content-between align-items-center">
                                                         <small className="text-muted">ID: {transaction.id}</small>
                                                         <span className={`badge ${getTransactionBadgeClass(transaction.storeType)} px-2 py-1`}>
-                                {transaction.storeType.toUpperCase()}
+                                {transaction.storeType}
                               </span>
                                                     </div>
 
