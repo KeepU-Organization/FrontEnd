@@ -93,6 +93,7 @@ const NavbarComponent:React.FC = () => {
                                     <li className="nav-item"> <Link to="/homeChildren" className="nav-link"> HOME </Link> </li>
                                     <li className="nav-item"> <Link to="/childHistory" className="nav-link"> HISTORIAL </Link> </li>
                                     <li className="nav-item"> <Link to="/store" className="nav-link"> TIENDA </Link> </li>
+                                    <li className="nav-item"> <Link to="/academia" className="nav-link"> ACADEMIA </Link> </li>
 
                                     <li className="nav-item"><Link to="/signup" className="nav-link" >
                                         <GrayButton>{user.name}</GrayButton>

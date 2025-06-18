@@ -83,7 +83,7 @@ export const userService={
                 isDarkMode: data.isDarkMode,
                 phoneNumber: data.phoneNumber,
                 age: data.age,
-                getProfilePicture: data.getProfilePicture || '', // Asegúrate de que este campo exista
+                profilePicture: data.profilePicture || '', // Asegúrate de que este campo exista
             };
         } catch (error) {
             // Manejar específicamente errores de autenticación
