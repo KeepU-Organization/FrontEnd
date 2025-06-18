@@ -23,6 +23,11 @@ import Store from "./pages/loggedChildren/store/Store.tsx";
 import {StoreContextProvider} from "./context/StoreContext.tsx";
 import {GiftCardContextProvider} from "./context/GIftCardsContext.tsx";
 import ChildHistory from "./pages/loggedChildren/history/ChildHistory.tsx";
+import {CoursesContextProvider} from "./context/CoursesContext.tsx";
+import CourseSelection from "./pages/loggedChildren/academia/CourseSelection.tsx";
+import CourseDetail from './pages/loggedChildren/academia/InCourse.tsx';
+import {ModulesContextProvider} from "./context/ModulesContext.tsx";
+import {ContentItemContextProvider} from "./context/ContentItemContext.tsx";
 
 
 
@@ -34,6 +39,9 @@ const App: React.FC = () => {
                 <WalletProvider>
                     <StoreContextProvider>
                         <GiftCardContextProvider>
+                            <CoursesContextProvider>
+                                <ModulesContextProvider>
+                                    <ContentItemContextProvider>
 
                 <ThemeProvider>
                     <BrowserRouter>
@@ -107,7 +115,17 @@ const App: React.FC = () => {
                                     <ChildHistory></ChildHistory>
                                 </PrivateRouteChildren>
                             }></Route>
+                            <Route path="/academia" element={
+                                <PrivateRouteChildren>
+                                    <CourseSelection></CourseSelection>
+                                </PrivateRouteChildren>
+                            }></Route>
 
+                            <Route path="/course/:courseCode" element={
+                                <PrivateRouteChildren>
+                                    <CourseDetail></CourseDetail>
+                                </PrivateRouteChildren>
+                            }></Route>
                             {/* Ruta de autenticación */}
 
                         </Routes>
@@ -120,6 +138,9 @@ const App: React.FC = () => {
                     </BrowserRouter>
                 </ThemeProvider>
 
+                                    </ContentItemContextProvider>
+                                </ModulesContextProvider>
+                            </CoursesContextProvider>
 
                         </GiftCardContextProvider>
                     </StoreContextProvider>

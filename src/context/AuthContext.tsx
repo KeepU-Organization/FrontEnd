@@ -11,6 +11,7 @@ interface User {
     emailVerified: boolean;
     isAuthenticated: boolean;
     userType:string;
+    profilePicture: string; // Aseguramos que sea una cadena, incluso si es vacía
 }
 
 interface AuthContextType {
@@ -60,6 +61,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                             emailVerified: userData.isEmailVerified,
                             isAuthenticated: true,
                             userType: userData.userType,
+                            profilePicture: userData.profilePicture || '', // Aseguramos que profilePicture sea una cadena
                         };
                         setUser(user);
                     } catch (error) {
@@ -121,6 +123,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                     emailVerified: userData.isEmailVerified,
                     isAuthenticated: true,
                     userType: userData.userType,
+                    profilePicture: userData.profilePicture || '', // Aseguramos que profilePicture sea una cadena
                 };
                 setUser(updatedUser);
             }

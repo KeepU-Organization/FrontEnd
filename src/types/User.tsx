@@ -17,7 +17,7 @@ export interface userResponse {
 
     phoneNumber:number;
     age:number;
-    getProfilePicture:string;
+    profilePicture:string;
 }
 export interface loginResponse {
     userId: number;
