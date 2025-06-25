@@ -5,6 +5,8 @@ import AddChildModal from "../../../components/modals/AddChildModal.tsx";
 import {useWallets} from "../../../hooks/UseWallets.tsx";
 import DepositModal from "../../../components/modals/DepositModal.tsx";
 import {ParentHistoryService} from "../../../services/ParentHistoryService.tsx";
+import EditSpendingLimitModal from "../../../components/modals/EditSpendingLimitModal.tsx";
+
 import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 
 
@@ -36,6 +38,9 @@ const HomeParent = () => {
     const [data, setData] = useState<Transaction[]>([]);
     const [groupBy, setGroupBy] = useState<Grouping>('day');
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const [showLimitModal, setShowLimitModal] = useState(false);
+
+
 
     const toggleAmountVisibility = () => {
         setShowAmount(!showAmount);
@@ -149,8 +154,9 @@ const HomeParent = () => {
                         </button>
                     </div>
                 </div>
+                {/* Agregar Limites de hijos */}
                 <div className="col-auto">
-                    <button className="btn btn-outline-primary me-2">
+                    <button className="btn btn-outline-primary me-2" onClick={() => setShowLimitModal(true)}>
                         Editar Límite
                     </button>
                 </div>
@@ -246,7 +252,13 @@ const HomeParent = () => {
                 show={showDepositModal}
                 onClose={handleCloseDepositModal}
             ></DepositModal>
-            
+
+
+            {/* Modal para Limite de gastos */}
+            <EditSpendingLimitModal
+                show={showLimitModal}
+                onClose={() => setShowLimitModal(false)}
+            />
         </div>
     );
 };

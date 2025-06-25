@@ -52,11 +52,13 @@ const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
         child.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    // Graficos y lista de niños
     const handleSupervise = (child: Child) => {
         console.log(`Supervisando a ${child.name}`);
         alert(`Supervisando a ${child.name}`);
     };
 
+    //cambiar nom fourm
     const handleTransfer = (child:Child) => {
         setSelectedChildId(child.id);
     };
