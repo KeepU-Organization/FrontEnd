@@ -5,39 +5,54 @@ import Footer from '../../components/footer/Footer';
 
 import piggy from '../../assets/landing-ahorro.png';
 
+// Integrantes modulos
+import salvadorimg from '../../assets/Salvador_Diaz.png';
+import ricardoimg from '../../assets/Ricardo_Rivas.png';
+import diegoimg from '../../assets/Diego_Salinas.png';
+import joaquinimg from '../../assets/Joaquin_Arevalo.png';
+import sofiaimg from '../../assets/Sofia_Miranda.png';
+
+// Testimonios modulos
+import anaRodriguezimg from '../../assets/ana_rodriguez.png';
+import leoRodriguezimg from '../../assets/leo_rodriguez.png';
+import martinGutierrezimg from '../../assets/martin_gutierrez.png';
+import sofiaMenaimg from '../../assets/sofia_mena.png';
+import julianTorreimg from '../../assets/julian_torres.png';
+
+
 const integrantes = [
-    { nombre: 'Salvador Dias ', rol: 'CEO', img: 'src/assets/Salvador_Diaz.png' },
-    { nombre: 'Ricardor Rivas', rol: 'CEO', img: 'src/assets/Ricardo_Rivas.png' },
-    { nombre: 'Diego Salinas', rol: 'CEO', img: 'src/assets/Diego_Salinas.png' },
-    { nombre: 'Joaquin Arévalo', rol: 'CEO', img: 'src/assets/Joaquin_Arevalo.png' },
-    { nombre: 'Sofía Miranda', rol: 'CEO', img: 'src/assets/Sofia_Miranda.png' },
+    { nombre: 'Salvador Diaz', rol: 'CEO', img: salvadorimg },
+    { nombre: 'Ricardo Rivas', rol: 'CEO', img: ricardoimg },
+    { nombre: 'Diego Salinas', rol: 'CEO', img: diegoimg },
+    { nombre: 'Joaquin Arévalo', rol: 'CEO', img: joaquinimg },
+    { nombre: 'Sofía Miranda', rol: 'CEO', img: sofiaimg },
 ];
 
 const testimonios = [
     {
         nombre: 'Ana Rodríguez (mamá de Leo)',
         texto: 'Siempre quise enseñarle a Leo a ahorrar, pero no sabía cómo hacerlo de forma entretenida. Con Keep-u, ahora tenemos una rutina juntos donde él establece sus metas y yo puedo acompañarlo en cada paso. ¡Nos ha unido como familia!',
-        img: 'src/assets/madre_familia.png',
+        img: anaRodriguezimg,
     },
     {
         nombre: 'Leo Rodríguez (12 años)',
         texto: 'Antes solo guardaba mis monedas en una caja. Ahora con Keep-u, tengo metas, gano puntos y aprendí qué es un presupuesto. Ahorré para mi bici y ya estoy empezando con mi próxima meta. ¡Me siento más responsable!',
-        img: 'src/assets/leo_niño.png',
+        img: leoRodriguezimg,
     },
     {
         nombre: 'Martín Gutiérrez (papá y docente)',
         texto: 'Combinar educación y finanzas no es fácil, pero Keep-u lo logra. La app le da a mis hijos herramientas reales para entender el valor del dinero, mientras yo tengo control y visibilidad. ¡Es una solución pensada para las familias!',
-        img: 'src/assets/martin_padre.png',
+        img: martinGutierrezimg,
     },
     {
         nombre: 'Sofía Mena (15 años)',
         texto: 'Me encanta que puedo ver cómo crece mi ahorro, definir mis propias metas y aprender con retos. No parece una clase aburrida, es más como un juego que me enseña cosas útiles para mi futuro.',
-        img: 'src/assets/sofia_niña.png',
+        img: sofiaMenaimg,
     },
     {
         nombre: 'Dr. Julián Torres (Especialista en educación financiera infantil)',
         texto: 'Keep-u representa un gran avance en la alfabetización financiera temprana. Combina lo mejor del juego, la tecnología y la supervisión adulta para generar hábitos sólidos desde la infancia. Una herramienta valiosa para el presente y futuro de las nuevas generaciones.',
-        img: 'src/assets/julian_especialista.png',
+        img: julianTorreimg,
     },
 ];
 

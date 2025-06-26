@@ -60,8 +60,6 @@ const Footer: React.FC = () => {
         textAlign: 'center',
     };
 
-    const libroImgUrl = 'https://upload.wikimedia.org/wikipedia/commons/6/6b/Libro_de_reclamaciones_peru.png';
-
     return (
         <footer style={style}>
             <div style={{ fontWeight: 800, fontSize: '1.13rem', letterSpacing: '0.5px', marginBottom: 4 }}>
@@ -72,15 +70,7 @@ const Footer: React.FC = () => {
                 <a href="/faq" style={linkStyle}>FAQ</a>
                 <a href="/contact" style={linkStyle}>Contacto</a>
                 <a href="/jobs" style={linkStyle}>Trabaja con nosotros</a>
-                <a
-                    href="https://www.yape.com.pe/libro-de-reclamaciones"
-                    style={linkStyle}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                >
-                    <img src={libroImgUrl} alt="Libro de reclamaciones" style={{ width: 22, height: 22, borderRadius: 3 }} />
-                    Libro de reclamaciones
-                </a>
+                <a href="/libro-de-reclamaciones" style={linkStyle}>Libro de reclamaciones</a>
             </nav>
             <div style={legalStyle}>
                 © {new Date().getFullYear()} Tu Futuro Financiero. Todos los derechos reservados.<br />
