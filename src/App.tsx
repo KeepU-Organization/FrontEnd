@@ -16,6 +16,11 @@ import {AuthRoute, PrivateRouteChildren, PrivateRouteParent, PublicRoute} from '
 import HomeParent from "./pages/loggedParent/home/HomeParent.tsx";
 import HomeChildren from "./pages/loggedChildren/home/HomeChildren.tsx";
 import Login from "./pages/Login/Login.tsx";
+
+import EditarPerfilPadre from "./pages/editarP/EditarPerfilPadre.tsx";
+import EditarPerfilHijo from "./pages/editarH/EditarPerfilHijo.tsx";
+import EditarPerfilHijoDemo from "./pages/EditarPerfilHijoDemo.tsx";
+
 import {WalletProvider} from "./context/WalletContext.tsx";
 import ParentHistory from "./pages/loggedParent/history/ParentHistory.tsx";
 import MonitorChildren from "./pages/loggedParent/monitorChildren/MonitorChildren.tsx";
@@ -28,6 +33,7 @@ import CourseSelection from "./pages/loggedChildren/academia/CourseSelection.tsx
 import CourseDetail from './pages/loggedChildren/academia/InCourse.tsx';
 import {ModulesContextProvider} from "./context/ModulesContext.tsx";
 import {ContentItemContextProvider} from "./context/ContentItemContext.tsx";
+
 
 
 
@@ -49,6 +55,8 @@ const App: React.FC = () => {
                         <Routes>
                             {/* Rutas públicas */}
                             <Route path="/" element={<Home />} />
+
+                            <Route path="/editar-perfil-hijo-demo" element={<EditarPerfilHijoDemo />} />
 
                             {/* Rutas solo para usuarios no autenticados */}
                             <Route path="/signup" element={
@@ -128,12 +136,20 @@ const App: React.FC = () => {
                             }></Route>
                             {/* Ruta de autenticación */}
 
+                            <Route path="/EditarPerfilPadre" element={
+                                <PrivateRoute>
+                                    <EditarPerfilPadre />
+                                </PrivateRoute>
+                            } />
+
+                            <Route path="/EditarPerfilHijo" element={
+                                <PrivateRoute>
+                                    <EditarPerfilHijo />
+                                </PrivateRoute>
+                            } />
+
+
                         </Routes>
-
-
-
-
-
 
                     </BrowserRouter>
                 </ThemeProvider>
