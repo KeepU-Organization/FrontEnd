@@ -63,7 +63,7 @@ const BuyModal: React.FC<BuyModalProps> = ({
                 setError(`Este gasto excede el límite establecido de S/. ${limit.maxAmount}`);
                 return;
             }
-
+            //Fin de funcion
             const purchaseSuccess = await onConfirm();
             if (purchaseSuccess) {
                 setSuccess(true);
