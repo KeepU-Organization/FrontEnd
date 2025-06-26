@@ -1,0 +1,73 @@
+.product-card {
+  transition: all 0.3s ease;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  }
+
+  .card-img-top {
+    height: 200px;
+    object-fit: contain;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+  }
+}
+
+// Estilo para evitar flechas en input number
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}
+.product-card {
+  transition: all 0.3s ease;
+  position: relative;
+
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+  }
+
+  .card-img-top {
+    height: 200px;
+    object-fit: contain;
+    background-color: #f8f9fa;
+    border-radius: 0.5rem;
+  }
+
+  &.product-unavailable {
+    opacity: 0.8;
+  }
+}
+
+.unavailable-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.1);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1;
+
+  .badge {
+    font-size: 1.2rem;
+    padding: 0.5rem 1rem;
+  }
+}
+
+// Estilo para evitar flechas en input number
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type=number] {
+  -moz-appearance: textfield;
+}

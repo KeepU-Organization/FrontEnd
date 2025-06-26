@@ -1,5 +1,5 @@
 import axios from 'axios';
-import {CreateParentRequest, loginResponse, userResponse} from "../types/User.tsx";
+import {CreateParentRequest, loginResponse, RegisterChildRequest, userResponse} from "../types/User.tsx";
 
 
 
@@ -24,6 +24,18 @@ export const userService={
             throw error;
         }
     },
+    registerChild: async (childData:RegisterChildRequest): Promise<userResponse> => {
+        try{
+            const response = await apiClient.post<userResponse>('users/register/child', childData);
+            return response.data;
+        }
+        catch (error) {
+            console.log('error registrando usuario: ', error);
+            throw error;
+        }
+    },
+
+
     login: async (email: string, password: string): Promise<loginResponse> => {
         try {
             const response = await apiClient.post<loginResponse>('auth/login', { email, password });
@@ -71,7 +83,7 @@ export const userService={
                 isDarkMode: data.isDarkMode,
                 phoneNumber: data.phoneNumber,
                 age: data.age,
-                getProfilePicture: data.getProfilePicture || '', // Asegúrate de que este campo exista
+                profilePicture: data.profilePicture || '', // Asegúrate de que este campo exista
             };
         } catch (error) {
             // Manejar específicamente errores de autenticación

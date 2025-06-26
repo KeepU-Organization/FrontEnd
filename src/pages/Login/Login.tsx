@@ -1,4 +1,4 @@
-import {Link} from "react-router";
+import {Link} from "react-router-dom";
 import {GrayButton} from "../../components/buttons/Buttons.tsx";
 import { useState } from "react";
 import {useForm} from "react-hook-form";
@@ -28,7 +28,8 @@ const Login = () => {
 
     const onSubmit = async (data: FormData) => {
         setIsLoading(true);
-        setApiError(null);
+        setApiError(null); // Limpiar errores previos
+
         try {
             // Iniciar sesión
             const response = await login(data.email, data.password);
@@ -43,29 +44,32 @@ const Login = () => {
             } else if (user?.userType === 'CHILD') {
                 navigate('/homeChildren');
             }
-        } catch (error: unknown) {
-            console.log('error en el inicio de sesion: ', error);
+        }  catch(error: unknown) {
+            console.log('error en el inicio de sesión: ', error);
 
             if (error && typeof error === 'object' && 'response' in error &&
                 error.response && typeof error.response === 'object' && 'data' in error.response) {
 
                 const data = error.response.data;
                 setApiError(typeof data === 'object' && data && 'message' in data ?
-                    data.message as string : 'Error al iniciar sesión');
+                    data.message as string : 'Error en el inicio de sesión');
             } else if (error instanceof Error) {
+
                 setApiError(error.message);
             } else {
                 setApiError('Ha ocurrido un error durante el inicio de sesión');
             }
-        } finally {
+        }
+        finally {
             setIsLoading(false);
         }
-    }
+
+    };
 
     return ( <div className="d-flex justify-content-center align-items-center min-vh-100" >
             <div className="card shadow p-4 col-md-6 col-lg-5 col-xl-4">
                 <h2 className="text-center mb-4">Hola, <br/>  Bienvenido de vuelta</h2>
-                {/* Usamos handleSubmit de react-hook-form */}
+                
                 <form onSubmit={handleSubmit(onSubmit)}>
 
                     <div className="mb-3 form-floating">
@@ -102,7 +106,6 @@ const Login = () => {
                         <label htmlFor="password" className="form-label">Contraseña</label>
                     </div>
 
-
                     {apiError && (
                         <div className="alert alert-danger" role="alert">
                             {apiError}
@@ -114,6 +117,9 @@ const Login = () => {
                             <GrayButton>ATRAS</GrayButton>
                         </Link>
                         <button type="submit" className="btn btn-outline-primary" disabled={isLoading}>ENTRAR</button>
+
+
+
 
                     </div>
                 </form>

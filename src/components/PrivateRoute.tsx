@@ -7,7 +7,7 @@ interface PrivateRouteProps{
     children:React.ReactNode;
 }
 
-export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
+export const PrivateRouteParent: React.FC<PrivateRouteProps> = ({ children }) => {
     const { user,  isAuthenticated,isLoading } = useAuth();
 
     const location = useLocation();
@@ -23,11 +23,34 @@ export const PrivateRoute: React.FC<PrivateRouteProps> = ({ children }) => {
     if (user && !user.emailVerified) {
         return <Navigate to="/authCode" state={{ from: location }} replace />;
     }
-
+    if (user?.userType !== "PARENT") {
+        return <Navigate to="/homeChild" state={{ from: location }} replace />;
+    }
 
     return <>{children}</>;
 }
+export const PrivateRouteChildren: React.FC<PrivateRouteProps> = ({ children }) => {
+    const { user,  isAuthenticated,isLoading } = useAuth();
 
+    const location = useLocation();
+
+    if (isLoading) {
+        return <LoadingComponent/>; // O un componente de carga
+    }
+
+    if (!isAuthenticated) {
+        return <Navigate to="/login" state={{ from: location }} replace />;
+    }
+
+    if (user && !user.emailVerified) {
+        return <Navigate to="/authCode" state={{ from: location }} replace />;
+    }
+    if (user?.userType !== "CHILD") {
+        return <Navigate to="/homeParent" state={{ from: location }} replace />;
+    }
+
+    return <>{children}</>;
+}
 
 interface PublicRouteProps {
     children: React.ReactNode;

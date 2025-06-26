@@ -11,6 +11,7 @@ interface User {
     emailVerified: boolean;
     isAuthenticated: boolean;
     userType:string;
+    profilePicture: string; // Aseguramos que sea una cadena, incluso si es vacía
 }
 
 interface AuthContextType {
@@ -60,6 +61,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                             emailVerified: userData.isEmailVerified,
                             isAuthenticated: true,
                             userType: userData.userType,
+                            profilePicture: userData.profilePicture || '', // Aseguramos que profilePicture sea una cadena
                         };
                         setUser(user);
                     } catch (error) {
@@ -88,24 +90,16 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         try {
             const response = await userService.login(email, password);
 
-            if (response.success && response.token) {
+            if (response.token) {
                 localStorage.setItem('authToken', response.token);
 
-                const user: User = {
-                    id: response.userId,
-                    name: response.name,
-                    email: response.email,
-                    emailVerified:response.isEmailVerified,
-                    isAuthenticated: true,
-                    userType: response.userType,
-                };
-
-                console.log("usuario establecido: ",user)
-                setUser(user);
+                // Obtenemos datos actualizados del usuario después del login
+                await updateCurrentUser();
                 return true;
             }
         } catch (error) {
             console.error('Error al iniciar sesión:', error);
+            throw error;
         }
         return false;
     };
@@ -129,6 +123,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                     emailVerified: userData.isEmailVerified,
                     isAuthenticated: true,
                     userType: userData.userType,
+                    profilePicture: userData.profilePicture || '', // Aseguramos que profilePicture sea una cadena
                 };
                 setUser(updatedUser);
             }

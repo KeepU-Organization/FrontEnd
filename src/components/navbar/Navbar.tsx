@@ -46,7 +46,7 @@ const NavbarComponent:React.FC = () => {
                 <a className="navbar-brand" href="#">
                     <img src={logo} alt="Logo" width="24" height="24"
                          className="d-inline-block align-text-top"/>
-                    keep-u
+                     keep-u
                 </a>
                 <button className={`navbar-toggler ${getTextClass()}`} type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
@@ -91,8 +91,9 @@ const NavbarComponent:React.FC = () => {
                                 {/*derecha*/}
                                 <ul className="navbar-nav ms-auto  mb-2 mb-lg-0">
                                     <li className="nav-item"> <Link to="/homeChildren" className="nav-link"> HOME </Link> </li>
-                                    <li className="nav-item"> <Link to="/" className="nav-link"> HISTORIAL </Link> </li>
-                                    <li className="nav-item"> <Link to="/" className="nav-link"> TIENDA </Link> </li>
+                                    <li className="nav-item"> <Link to="/childHistory" className="nav-link"> HISTORIAL </Link> </li>
+                                    <li className="nav-item"> <Link to="/store" className="nav-link"> TIENDA </Link> </li>
+                                    <li className="nav-item"> <Link to="/academia" className="nav-link"> ACADEMIA </Link> </li>
 
                                     <li className="nav-item"><Link to="/signup" className="nav-link" >
                                         <GrayButton>{user.name}</GrayButton>
@@ -116,8 +117,8 @@ const NavbarComponent:React.FC = () => {
                                 {/*derecha*/}
                                 <ul className="navbar-nav ms-auto  mb-2 mb-lg-0">
                                     <li className="nav-item"> <Link to="/homeParent" className="nav-link"> HOME </Link> </li>
-                                    <li className="nav-item"> <Link to="/" className="nav-link"> HISTORIAL </Link> </li>
-                                    <li className="nav-item"> <Link to="/" className="nav-link"> HIJOS </Link> </li>
+                                    <li className="nav-item"> <Link to="/parentHistory" className="nav-link"> HISTORIAL </Link> </li>
+                                    <li className="nav-item"> <Link to="/childMonitor" className="nav-link"> HIJOS </Link> </li>
 
                                     <li className="nav-item"><Link to="/signup" className="nav-link" >
                                         <GrayButton>{user.name}</GrayButton>
