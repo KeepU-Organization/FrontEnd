@@ -13,11 +13,11 @@ import joaquinimg from '../../assets/Joaquin_Arevalo.png';
 import sofiaimg from '../../assets/Sofia_Miranda.png';
 
 // Testimonios modulos
-import anaRodriguezimg from '../../assets/ana_rodriguez.png';
-import leoRodriguezimg from '../../assets/leo_rodriguez.png';
-import martinGutierrezimg from '../../assets/martin_gutierrez.png';
-import sofiaMenaimg from '../../assets/sofia_mena.png';
-import julianTorreimg from '../../assets/julian_torres.png';
+import anaRodriguezimg from '../../assets/madre_familia.png';
+import leoRodriguezimg from '../../assets/leo_niño.png';
+import martinGutierrezimg from '../../assets/martin_padre.png';
+import sofiaMenaimg from '../../assets/sofia_niña.png';
+import julianTorreimg from '../../assets/julian_especialista.png';
 
 
 const integrantes = [
