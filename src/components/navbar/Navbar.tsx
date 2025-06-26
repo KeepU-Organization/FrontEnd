@@ -46,7 +46,7 @@ const NavbarComponent:React.FC = () => {
                 <a className="navbar-brand" href="#">
                     <img src={logo} alt="Logo" width="24" height="24"
                          className="d-inline-block align-text-top"/>
-                    keep-u
+                     keep-u
                 </a>
                 <button className={`navbar-toggler ${getTextClass()}`} type="button" data-bs-toggle="collapse"
                         data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
