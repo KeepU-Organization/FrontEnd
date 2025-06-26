@@ -137,15 +137,15 @@ const App: React.FC = () => {
                             {/* Ruta de autenticación */}
 
                             <Route path="/EditarPerfilPadre" element={
-                                <PrivateRoute>
+                                <PrivateRouteParent>
                                     <EditarPerfilPadre />
-                                </PrivateRoute>
+                                </PrivateRouteParent>
                             } />
 
                             <Route path="/EditarPerfilHijo" element={
-                                <PrivateRoute>
+                                <PrivateRouteChildren>
                                     <EditarPerfilHijo />
-                                </PrivateRoute>
+                                </PrivateRouteChildren>
                             } />
 
 
