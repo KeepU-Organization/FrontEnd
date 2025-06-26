@@ -22,7 +22,7 @@ export default function EditarPerfilHijoDemo() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        alert("Cambios simulados enviados ✅ (sin backend)");
+        alert("Cambios simulados enviados (sin backend)");
     };
 
     return (
