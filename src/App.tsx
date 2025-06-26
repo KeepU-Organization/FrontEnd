@@ -16,6 +16,10 @@ import {AuthRoute, PrivateRoute, PublicRoute} from './components/PrivateRoute.ts
 import HomeParent from "./pages/loggedParent/home/HomeParent.tsx";
 import HomeChildren from "./pages/loggedChildren/home/HomeChildren.tsx";
 import Login from "./pages/Login/Login.tsx";
+import EditarPerfilPadre from "./pages/editarP/EditarPerfilPadre.tsx";
+import EditarPerfilHijo from "./pages/editarH/EditarPerfilHijo.tsx";
+import EditarPerfilHijoDemo from "./pages/EditarPerfilHijoDemo.tsx";
+
 
 
 
@@ -31,6 +35,8 @@ const App: React.FC = () => {
                         <Routes>
                             {/* Rutas públicas */}
                             <Route path="/" element={<Home />} />
+
+                            <Route path="/editar-perfil-hijo-demo" element={<EditarPerfilHijoDemo />} />
 
                             {/* Rutas solo para usuarios no autenticados */}
                             <Route path="/signup" element={
@@ -73,12 +79,20 @@ const App: React.FC = () => {
                                 </PrivateRoute>
                             } />
 
+                            <Route path="/EditarPerfilPadre" element={
+                                <PrivateRoute>
+                                    <EditarPerfilPadre />
+                                </PrivateRoute>
+                            } />
+
+                            <Route path="/EditarPerfilHijo" element={
+                                <PrivateRoute>
+                                    <EditarPerfilHijo />
+                                </PrivateRoute>
+                            } />
+
+
                         </Routes>
-
-
-
-
-
 
                     </BrowserRouter>
                 </ThemeProvider>
