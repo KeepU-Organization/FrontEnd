@@ -3,7 +3,9 @@ import { Modal, Button, Form, Alert } from 'react-bootstrap';
 import { securityKeyService } from '../../services/SecurityKeyService';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
-import {useAuth} from "../../hooks/UseAuth.tsx";
+import { useAuth } from '../../hooks/UseAuth';
+import { walletService } from '../../services/WalletService';
+import { SpendingLimitService } from '../../services/SpendingLimitService';
 
 interface BuyModalProps {
     isOpen: boolean;
@@ -20,14 +22,15 @@ const BuyModal: React.FC<BuyModalProps> = ({
                                                onConfirm,
                                                productName,
                                                quantity,
-                                               totalPrice
+                                               totalPrice,
                                            }) => {
     const [securityKey, setSecurityKey] = useState('');
     const [isVerifying, setIsVerifying] = useState(false);
     const [error, setError] = useState<string | null>(null);
     const [success, setSuccess] = useState(false);
     const { width, height } = useWindowSize();
-    const {user}=useAuth();
+    const { user } = useAuth();
+
     const handleVerify = async () => {
         if (!securityKey.trim()) {
             setError('Por favor ingrese su código de seguridad');
@@ -38,25 +41,37 @@ const BuyModal: React.FC<BuyModalProps> = ({
         setError(null);
 
         try {
-            let email='';
-            if (user){
-                email=user.email;
+            if (!user) {
+                setError('Usuario no autenticado');
+                return;
             }
-            const isValid = await securityKeyService.checkSecurityKey(email, securityKey);
 
-            if (isValid) {
-                console.log("Codigo valido")
-                const purchaseSuccess = await onConfirm();
-                if (purchaseSuccess) {
-                    setSuccess(true);
-                } else {
-                    setError('No se pudo completar la compra. Inténtelo de nuevo.');
-                }
-            } else {
+            const isValid = await securityKeyService.checkSecurityKey(user.email, securityKey);
+
+            if (!isValid) {
                 setError('Código de seguridad incorrecto');
+                return;
+            }
+
+            // Obtener billetera del usuario hijo
+            const wallet = await walletService.getWalletByUserId(user.id);
+
+            // Obtener límite de gasto
+            const limit = await SpendingLimitService.getLimitByWalletId(wallet.walletId);
+
+            if (limit && totalPrice > limit.maxAmount) {
+                setError(`Este gasto excede el límite establecido de S/. ${limit.maxAmount}`);
+                return;
+            }
+
+            const purchaseSuccess = await onConfirm();
+            if (purchaseSuccess) {
+                setSuccess(true);
+            } else {
+                setError('No se pudo completar la compra. Inténtelo de nuevo.');
             }
         } catch (err) {
-            setError('Error al verificar el código de seguridad');
+            setError('Error al verificar el código o el límite de gasto.');
             console.error(err);
         } finally {
             setIsVerifying(false);
@@ -75,9 +90,7 @@ const BuyModal: React.FC<BuyModalProps> = ({
             {success && <Confetti width={width} height={height} recycle={false} numberOfPieces={500} />}
 
             <Modal.Header closeButton>
-                <Modal.Title>
-                    {success ? 'Compra Exitosa' : 'Confirmar Compra'}
-                </Modal.Title>
+                <Modal.Title>{success ? 'Compra Exitosa' : 'Confirmar Compra'}</Modal.Title>
             </Modal.Header>
 
             <Modal.Body>
@@ -85,14 +98,8 @@ const BuyModal: React.FC<BuyModalProps> = ({
                     <>
                         <div className="mb-3">
                             <h5 className="text-center">Resumen de compra</h5>
-                            <div className="d-flex justify-content-between">
-                                <span>Producto:</span>
-                                <span>{productName}</span>
-                            </div>
-                            <div className="d-flex justify-content-between">
-                                <span>Cantidad:</span>
-                                <span>{quantity}</span>
-                            </div>
+                            <div className="d-flex justify-content-between"><span>Producto:</span><span>{productName}</span></div>
+                            <div className="d-flex justify-content-between"><span>Cantidad:</span><span>{quantity}</span></div>
                             <div className="d-flex justify-content-between">
                                 <span>Total:</span>
                                 <span className="fw-bold">S/. {totalPrice.toFixed(2)}</span>
@@ -116,7 +123,9 @@ const BuyModal: React.FC<BuyModalProps> = ({
                     <div className="text-center py-4">
                         <i className="bi bi-check-circle-fill text-success" style={{ fontSize: '4rem' }}></i>
                         <h4 className="mt-3">¡Compra realizada con éxito!</h4>
-                        <p>Su compra de {quantity} {quantity > 1 ? 'unidades' : 'unidad'} de {productName} ha sido procesada correctamente.</p>
+                        <p>
+                            Su compra de {quantity} {quantity > 1 ? 'unidades' : 'unidad'} de {productName} ha sido procesada correctamente.
+                        </p>
                     </div>
                 )}
             </Modal.Body>
@@ -127,11 +136,7 @@ const BuyModal: React.FC<BuyModalProps> = ({
                         <Button variant="secondary" onClick={handleClose} disabled={isVerifying}>
                             Cancelar
                         </Button>
-                        <Button
-                            variant="primary"
-                            onClick={handleVerify}
-                            disabled={isVerifying}
-                        >
+                        <Button variant="primary" onClick={handleVerify} disabled={isVerifying}>
                             {isVerifying ? 'Verificando...' : 'Confirmar Compra'}
                         </Button>
                     </>
