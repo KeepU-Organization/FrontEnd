@@ -1,5 +1,6 @@
 import axios from "axios";
 import {ChildSummary} from "../types/User.tsx";
+import {TransactionResponse} from "../types/Transactions.tsx";
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080/api/v1/';
 
@@ -37,6 +38,20 @@ export const MonitorChildrenService = {
     //        throw error;
     //    }
     //}
+
+   // export const ChildrenHistoryService ={
+    //    getchildrenhistory: async (walletId:string): Promise<TransactionResponse[]> => {
+     //       try {
+     //           const response = await apiClient.get(`transactions/wallet/${walletId}`,
+     //               { headers: getHeaders() });
+     //           return response.data;
+     //       } catch (error) {
+     //           console.error('Error fetching parent history:', error);
+     //           throw error;
+      //      }
+     //   }
+   // }//
+
     getChildrenList:async(parentId: number): Promise<ChildSummary[]> => {
         try {
             const response = await apiClient.get(`parent-children/${parentId}`,

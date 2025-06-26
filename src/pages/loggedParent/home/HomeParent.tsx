@@ -5,8 +5,9 @@ import AddChildModal from "../../../components/modals/AddChildModal.tsx";
 import {useWallets} from "../../../hooks/UseWallets.tsx";
 import DepositModal from "../../../components/modals/DepositModal.tsx";
 import {ParentHistoryService} from "../../../services/ParentHistoryService.tsx";
-import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
+import EditSpendingLimitModal from "../../../components/modals/EditSpendingLimitModal.tsx";
 
+import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
 
 interface TransactionResponse {
     amount: number;
@@ -36,6 +37,8 @@ const HomeParent = () => {
     const [data, setData] = useState<Transaction[]>([]);
     const [groupBy, setGroupBy] = useState<Grouping>('day');
     const [refreshTrigger, setRefreshTrigger] = useState(0);
+    const [showLimitModal, setShowLimitModal] = useState(false);
+
 
     const toggleAmountVisibility = () => {
         setShowAmount(!showAmount);
@@ -111,10 +114,6 @@ const HomeParent = () => {
         }
     });
 
-    //const chartData = Object.entries(grouped).map(([date, total]) => ({
-    //    date,
-    //    amount: total,
-    //}));
     const chartData = Object.entries(grouped).map(([date, amounts]) => ({
         date,
         ...amounts,
@@ -149,9 +148,11 @@ const HomeParent = () => {
                         </button>
                     </div>
                 </div>
+                {/* Agregar Limites de hijos */}
+                {/* Mostrar lista de hijos con botón para editar límite */}
                 <div className="col-auto">
-                    <button className="btn btn-outline-primary me-2">
-                        Editar Límite
+                    <button className="btn btn-outline-primary" onClick={() => setShowLimitModal(true)}>
+                        Establecer Límite de Gasto
                     </button>
                 </div>
                 <div className="col-auto">
@@ -184,15 +185,6 @@ const HomeParent = () => {
                                     <p>Espacio para gráficos de barras/líneas</p>
                                 </div>
                             ) : (
-                                //<ResponsiveContainer width="100%" height={300}>
-                                //    <BarChart data={chartData}>
-                                //        <CartesianGrid strokeDasharray="3 3" />
-                                //        <XAxis dataKey="date" />
-                                //        <YAxis />
-                                //        <Tooltip />
-                                //        <Bar dataKey="amount" fill="#0d6efd" />
-                                //    </BarChart>
-                                //</ResponsiveContainer>
                                 <ResponsiveContainer width="100%" height={300}>
                                     <BarChart data={chartData} margin={{ top: 10, right: 30, left: 0, bottom: 5 }}>
                                         <CartesianGrid strokeDasharray="3 3" />
@@ -232,7 +224,7 @@ const HomeParent = () => {
                     </button>
                 </div>
             </div>
-            
+
             {/* Modal para agregar hijos */}
             <AddChildModal
                 id={'addChild'}
@@ -246,7 +238,16 @@ const HomeParent = () => {
                 show={showDepositModal}
                 onClose={handleCloseDepositModal}
             ></DepositModal>
-            
+
+            {/* Agregar Limites de hijos */}
+            {/* Modal para Limite de gastos */}
+            {showLimitModal && (
+                <EditSpendingLimitModal
+                    show={showLimitModal}
+                    onClose={() => setShowLimitModal(false)}
+                />
+            )}
+
         </div>
     );
 };

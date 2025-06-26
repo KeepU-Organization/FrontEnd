@@ -74,6 +74,7 @@ export const walletService = {
             throw error;
         }
     }
+    //Cuenta fake
 //sb-a5alb43311586@personal.example.com
     //3H31yc&y
 }
