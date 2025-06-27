@@ -3,6 +3,7 @@ import { Search, User, Eye, ArrowRightLeft, Activity, Bell } from 'lucide-react'
 import { MonitorChildrenService } from "../../../services/MonitorChildrenService.tsx";
 import { useAuth } from "../../../hooks/UseAuth.tsx";
 import TransferMoney from "../../../components/modals/TransferMoney.tsx";
+import {useNavigate} from "react-router-dom";
 
 interface Child {
     id: number;
@@ -16,6 +17,9 @@ const MonitorChildren: React.FC = () => {
     const [searchTerm, setSearchTerm] = useState('');
     const [loading, setLoading] = useState(false);
     const { user } = useAuth();
+    const navigate = useNavigate();
+
+
 const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
 
     useEffect(() => {
@@ -54,8 +58,8 @@ const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
 
     // Graficos y lista de niños
     const handleSupervise = (child: Child) => {
-        console.log(`Supervisando a ${child.name}`);
-        alert(`Supervisando a ${child.name}`);
+        const childName = child.name.replace(/\s+/g, '-').toLowerCase();
+        navigate(`/monitor/${childName}`, { state: { childId: child.id } });
     };
 
     //cambiar nom fourm
@@ -70,7 +74,7 @@ const [selectedChildId, setSelectedChildId] = useState<number | null>(null);
     };
 
     return (
-        <div className="container py-5">
+        <div className="container py-1">
             {/* Encabezado con estilo moderno */}
             <div className="text-center mb-5">
                 <div className="d-inline-flex align-items-center justify-content-center bg-primary bg-opacity-10 p-3 rounded-circle mb-3">

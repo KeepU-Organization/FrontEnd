@@ -33,6 +33,7 @@ import CourseSelection from "./pages/loggedChildren/academia/CourseSelection.tsx
 import CourseDetail from './pages/loggedChildren/academia/InCourse.tsx';
 import {ModulesContextProvider} from "./context/ModulesContext.tsx";
 import {ContentItemContextProvider} from "./context/ContentItemContext.tsx";
+import SupervisingChildren from "./pages/loggedParent/monitorChildren/SupervisingChildren.tsx";
 
 
 
@@ -104,7 +105,11 @@ const App: React.FC = () => {
                                     <MonitorChildren></MonitorChildren>
                                 </PrivateRouteParent>
                             }></Route>
-
+                            <Route path="/monitor/:childName" element={
+                                <PrivateRouteParent>
+                                    <SupervisingChildren></SupervisingChildren>
+                                </PrivateRouteParent>
+                            }></Route>
 
 
                             {/* Rutas privadas para hijos */}
@@ -134,7 +139,7 @@ const App: React.FC = () => {
                                     <CourseDetail></CourseDetail>
                                 </PrivateRouteChildren>
                             }></Route>
-                            {/* Ruta de autenticación */}
+
 
                             <Route path="/EditarPerfilPadre" element={
                                 <PrivateRouteParent>

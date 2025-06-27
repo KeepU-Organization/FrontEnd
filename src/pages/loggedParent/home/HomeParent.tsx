@@ -8,25 +8,9 @@ import {ParentHistoryService} from "../../../services/ParentHistoryService.tsx";
 import EditSpendingLimitModal from "../../../components/modals/EditSpendingLimitModal.tsx";
 
 import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxis, YAxis} from 'recharts';
+import {Transaction, TransactionResponse} from "../../../types/Transactions.tsx";
 
-interface TransactionResponse {
-    amount: number;
-    description: string;
-    transactionType: string; // 'DEPOSIT', 'TRANSFER'
-    transactionDate: string;
-    walletId?: string;
-    walletName?: string;
-}
 
-interface Transaction {
-    id: string;
-    amount: number;
-    description: string;
-    type: string; // 'DEPOSIT', 'TRANSFER'
-    date: string;
-    walletId?: string;
-    walletName?: string;
-}
 type Grouping = 'day' | 'month' | 'year';
 
 const HomeParent = () => {

@@ -16,7 +16,13 @@ interface Props {
 
 const EditSpendingLimitModal: React.FC<Props> = ({ show, onClose }) => {
     const { user } = useAuth(); // <--- Obtenemos el usuario padre
-    const [childrenWallets, setChildrenWallets] = useState<WalletResponse[]>([]);
+
+
+    type ExtendedWallet = WalletResponse & { childName: string };
+
+    const [childrenWallets, setChildrenWallets] = useState<ExtendedWallet[]>([]);
+
+
     const [selectedWalletId, setSelectedWalletId] = useState('');
     const [amount, setAmount] = useState('');
     const [existingLimit, setExistingLimit] = useState<SpendingLimitResponse | null>(null);
@@ -25,6 +31,30 @@ const EditSpendingLimitModal: React.FC<Props> = ({ show, onClose }) => {
 
     console.log("Modal montado - show:", show, "parentId:", user?.id);
 
+
+    useEffect(() => {
+        const loadLimit = async () => {
+            if (!selectedWalletId) return;
+            setLoading(true);
+            try {
+                const limit = await SpendingLimitService.getLimitByWalletId(selectedWalletId);
+                setExistingLimit(limit);
+                setAmount(limit.maxAmount.toString());
+            } catch {
+                setExistingLimit(null);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        if (show && selectedWalletId) {
+            loadLimit();
+        }
+    }, [show, selectedWalletId]);
+
+
+
+
     useEffect(() => {
         const loadWallets = async () => {
             if (!user?.id) return;
@@ -32,13 +62,17 @@ const EditSpendingLimitModal: React.FC<Props> = ({ show, onClose }) => {
                 const children = await MonitorChildrenService.getChildrenList(user.id);
                 console.log("Children list:", children);
 
-                const walletList: WalletResponse[] = [];
+                const walletList: ExtendedWallet[] = [];
 
                 for (const child of children) {
                     const wallet = await walletService.getWalletByUserId(child.id);
                     console.log(`Wallet for child ${child.id}:`, wallet);
                     if (wallet) {
-                        walletList.push(wallet);
+                        // Añadir el nombre del hijo a la billetera
+                        walletList.push({
+                            ...wallet,
+                            childName: child.name // Añadir el nombre del hijo desde el objeto child
+                        });
                     }
                 }
 
@@ -60,25 +94,6 @@ const EditSpendingLimitModal: React.FC<Props> = ({ show, onClose }) => {
         }
     }, [show, user?.id]);
 
-    useEffect(() => {
-        const loadLimit = async () => {
-            if (!selectedWalletId) return;
-            setLoading(true);
-            try {
-                const limit = await SpendingLimitService.getLimitByWalletId(selectedWalletId);
-                setExistingLimit(limit);
-                setAmount(limit.maxAmount.toString());
-            } catch {
-                setExistingLimit(null);
-            } finally {
-                setLoading(false);
-            }
-        };
-
-        if (show && selectedWalletId) {
-            loadLimit();
-        }
-    }, [show, selectedWalletId]);
 
     const handleSubmit = async () => {
         const parsedAmount = parseFloat(amount);
@@ -132,7 +147,7 @@ const EditSpendingLimitModal: React.FC<Props> = ({ show, onClose }) => {
                                 <option value="">-- Selecciona una billetera --</option>
                                 {childrenWallets.map((wallet) => (
                                     <option key={wallet.walletId} value={wallet.walletId}>
-                                        Hijo #{wallet.userId} - Wallet {wallet.walletId}
+                                        {wallet.childName || `Hijo #${wallet.userId}`}: Wallet {wallet.walletId}
                                     </option>
                                 ))}
                             </Form.Select>
