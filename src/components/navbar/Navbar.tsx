@@ -109,8 +109,21 @@ const NavbarComponent: React.FC = () => {
                                 <li className="nav-item">
                                     <Link to="/childMonitor" className="nav-link">HIJOS</Link>
                                 </li>
+                                {/* Aqui debe redirigirnos a la page de editarperfil de parent*/}
                                 <li className="nav-item">
-                                    <UserAvatar />
+                                    <Link
+                                        to={
+                                            user?.userType === "PARENT"
+                                                ? "/EditarPerfilPadre"
+                                                : user?.userType === "CHILD"
+                                                    ? "/EditarPerfilHijo"
+                                                    : "#"
+                                        }
+                                        className="nav-link"
+                                    >
+                                        <UserAvatar />
+                                    </Link>
+
                                 </li>
                                 <li className="nav-item">
                                     <button className="btn btn-outline-danger ms-2" onClick={handleLogout}>
@@ -133,8 +146,20 @@ const NavbarComponent: React.FC = () => {
                                 <li className="nav-item">
                                     <Link to="/academia" className="nav-link">ACADEMIA</Link>
                                 </li>
+                                {/* Aqui debe redirigirnos a la page de editarperfil de parent*/}
                                 <li className="nav-item">
-                                    <UserAvatar />
+                                    <Link
+                                        to={
+                                            user?.userType === "CHILD"
+                                                ? "/EditarPerfilHijo"
+                                                : user?.userType === "PARENT"
+                                                    ? "/EditarPerfilPadre"
+                                                    : "#"
+                                        }
+                                        className="nav-link"
+                                    >
+                                        <UserAvatar />
+                                    </Link>
                                 </li>
                                 <li className="nav-item">
                                     <button className="btn btn-outline-danger ms-2" onClick={handleLogout}>

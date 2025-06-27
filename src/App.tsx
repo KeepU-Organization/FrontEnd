@@ -17,8 +17,8 @@ import HomeParent from "./pages/loggedParent/home/HomeParent.tsx";
 import HomeChildren from "./pages/loggedChildren/home/HomeChildren.tsx";
 import Login from "./pages/Login/Login.tsx";
 
-import EditarPerfilPadre from "./pages/editarP/EditarPerfilPadre.tsx";
-import EditarPerfilHijo from "./pages/editarH/EditarPerfilHijo.tsx";
+import EditarPerfilPadre from "./pages/loggedParent/editarP/EditarPerfilPadre.tsx";
+import EditarPerfilHijo from "./pages/loggedChildren/editarH/EditarPerfilHijo.tsx";
 import EditarPerfilHijoDemo from "./pages/EditarPerfilHijoDemo.tsx";
 
 import {WalletProvider} from "./context/WalletContext.tsx";
