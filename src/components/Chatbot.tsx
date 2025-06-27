@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { ChatMessageService } from '../services/ChatBotService';
 import { useTheme } from '../ThemeContext';
+import chatbotImg from '../assets/gato_chatbot.png';
 
 const palettes = {
     light: {
@@ -69,20 +70,28 @@ const Chatbot = () => {
                         height: 64,
                         borderRadius: '50%',
                         background: palette.bgGradient,
-                        color: palette.primary,
                         border: 'none',
                         boxShadow: '0 6px 24px rgba(0,0,0,0.18)',
-                        fontSize: 36,
                         cursor: 'pointer',
                         display: 'flex',
                         alignItems: 'center',
                         justifyContent: 'center',
                         transition: 'background 0.2s',
                         outline: 'none',
+                        padding: 0,
                     }}
                     title="Abrir Chatbot"
                 >
-                    🤖
+                    <img
+                        src={chatbotImg}
+                        alt="Chatbot"
+                        style={{
+                            width: 40,
+                            height: 40,
+                            borderRadius: '50%',
+                            objectFit: 'cover',
+                        }}
+                    />
                 </button>
             )}
             {open && (
@@ -100,8 +109,21 @@ const Chatbot = () => {
                     minHeight: 420,
                 }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 10 }}>
-                        <span style={{ fontWeight: 700, color: palette.primary, fontSize: 22, letterSpacing: 1 }}>🤖 Chatbot</span>
-                        <button
+<span style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+    <img
+        src={chatbotImg}
+        alt="Chatbot"
+        style={{
+            width: 30,
+            height: 30,
+            borderRadius: '50%',
+            objectFit: 'cover',
+        }}
+    />
+    <span style={{ fontWeight: 700, color: palette.primary, fontSize: 22, letterSpacing: 1 }}>
+        MichiBot
+    </span>
+</span>                        <button
                             onClick={() => setOpen(false)}
                             style={{
                                 background: 'none',
