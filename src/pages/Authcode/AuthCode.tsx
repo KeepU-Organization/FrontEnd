@@ -8,8 +8,6 @@ import {AuthCodeRequest} from "../../types/AuthCode.tsx";
 import {useEffect} from "react";
 import {Controller, useForm} from "react-hook-form";
 
-import emailjs from '@emailjs/browser';
-
 type FormData = {
     authCode: string;
 }
@@ -17,8 +15,9 @@ type FormData = {
 const AuthCode = () => {
 
     const {user, updateCurrentUser} = useAuth();
+    const [showVerificationCode, setShowVerificationCode] = useState('');
     //const [verificationMessage, setVerificationMessage] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [apiError, setApiError] = useState<string | null>(null);
     const [timeRemaining, setTimeRemaining] = useState<number>(0);
 
@@ -51,6 +50,26 @@ const AuthCode = () => {
         };
     }, [timeRemaining]);
 
+    useEffect(() => {
+        const loadAuthCode = async () => {
+            try {
+                if (user?.id) {
+                    const authCodeData = await authCodeService.getByUserId(user.id, 'EMAIL_VERIFICATION');
+                    if (authCodeData && authCodeData.code) {
+                        setShowVerificationCode(authCodeData.code);
+                    }
+                }
+            } catch (error) {
+                console.error('Error al cargar el código de autenticación:', error);
+                setShowVerificationCode('No hay verification code para este usuario');
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        loadAuthCode();
+    }, [user?.id]);
+
 
 
     const handleGenerateNewCode = async (id: number | undefined, codeType: string) => {
@@ -63,18 +82,7 @@ const AuthCode = () => {
         }
         try {
             const newCode = await authCodeService.createAuthCode(authCodeRequest);
-
-            if (user){
-                await emailjs.send("service_keepu", "template_5n9cqlo", {
-                    name: "Salvador Diaz",
-                    email:"sdiaz.aguirre2003@gmail.com",
-                    message: newCode.code,
-                    toEmail: user.email,
-                    replyEmail: "sdiaz.aguirre2003@gmail.com",
-                },
-                    "Qf_DWUNFXlGuJRoOu");
-            }
-
+            setShowVerificationCode(`Nuevo código generado: ${newCode.code}`);
             setTimeRemaining(60);
         } catch (error) {
             console.error('Error generando nuevo código:', error);
@@ -181,13 +189,20 @@ const AuthCode = () => {
                 >
                     {timeRemaining > 0
                         ? `Espera ${timeRemaining}s`
-                        : 'Generar código'}
+                        : 'Generar nuevo código'}
                 </button>
             </div>
 
         </form>
                 </div>
             </div>
+            <p>
+                Solo por modo prueba:
+                {isLoading
+                    ? "Cargando código de verificación..."
+                    : `codigo de verificacion es ${showVerificationCode}`
+                }
+            </p>
         </div>
 
     );
