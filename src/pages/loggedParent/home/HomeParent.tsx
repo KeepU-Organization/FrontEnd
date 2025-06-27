@@ -1,5 +1,6 @@
 import {useEffect, useState} from 'react';
 import './HomeParent.scss'; // Importar estilos específicos si es necesario
+import Chatbot from "../../../components/Chatbot.tsx";
 
 import AddChildModal from "../../../components/modals/AddChildModal.tsx";
 import {useWallets} from "../../../hooks/UseWallets.tsx";
@@ -247,7 +248,7 @@ const HomeParent = () => {
                     onClose={() => setShowLimitModal(false)}
                 />
             )}
-
+            <Chatbot />
         </div>
     );
 };
