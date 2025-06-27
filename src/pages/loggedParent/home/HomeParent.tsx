@@ -12,6 +12,7 @@ import {Bar, BarChart, CartesianGrid, Legend, ResponsiveContainer, Tooltip, XAxi
 import {Transaction, TransactionResponse} from "../../../types/Transactions.tsx";
 
 
+
 type Grouping = 'day' | 'month' | 'year';
 
 const HomeParent = () => {

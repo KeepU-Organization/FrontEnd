@@ -15,19 +15,11 @@ import {
 import {Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import './ChildHistory.css'
+import {TransactionResponse} from "../../../types/Transactions.tsx";
 // Interfaces para los datos de la API y nuestro componente
-interface TransactionResponse {
-    amount: number;
-    description: string;
-    transactionDate: string;
-    walletId?: string;
-    walletName?: string;
-    giftCardCode:string;
-    storeName:string;
-    storeType:string;
-}
 
-interface Transaction {
+
+interface TransactionHistory {
     id: string;
     amount: number;
     description: string;
@@ -43,7 +35,7 @@ const ChildHistory: React.FC = () => {
     const [typeFilter, setTypeFilter] = useState<string>('');
     const [dateFilter, setDateFilter] = useState<string>('');
     const [amountFilter, setAmountFilter] = useState<string>('');
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [transactions, setTransactions] = useState<TransactionHistory[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
 
     const { wallets } = useWallets();
@@ -67,7 +59,7 @@ const ChildHistory: React.FC = () => {
                     const data = await ParentHistoryService.getParentHistory(wallets[0].walletId);
 
                     // Transformar TransactionResponse[] a Transaction[] con IDs generados
-                    const transformedData: Transaction[] = data.map((item: TransactionResponse, index: number) => ({
+                    const transformedData: TransactionHistory[] = data.map((item: TransactionResponse, index: number) => ({
                         id: (index + 1).toString(),
                         amount: item.amount,
                         description: item.description,
@@ -93,7 +85,7 @@ const ChildHistory: React.FC = () => {
     }, [wallets]);
 
     const filteredTransactions = useMemo(() => {
-        return transactions.filter((transaction: Transaction) => {
+        return transactions.filter((transaction: TransactionHistory) => {
             const matchesType = !typeFilter || transaction.storeType === typeFilter;
             const matchesDate = !dateFilter || transaction.date.includes(dateFilter);
             const matchesAmount = !amountFilter || transaction.amount.toString().includes(amountFilter);
@@ -310,7 +302,7 @@ const ChildHistory: React.FC = () => {
                             </div>
                         ) : (
                             <div className="row g-4">
-                                {filteredTransactions.map((transaction: Transaction) => (
+                                {filteredTransactions.map((transaction: TransactionHistory) => (
                                     <div key={transaction.id} className="col-12 col-md-6 col-lg-4">
                                         <div
                                             className={`card h-100 shadow-sm border-2 ${getCardBorderClass(transaction.storeType)} position-relative`}
