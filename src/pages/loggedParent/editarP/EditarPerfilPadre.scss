@@ -1,0 +1,139 @@
+.editar-perfil-grid {
+  display: flex;
+  gap: 32px;
+  justify-content: center;
+  align-items: center;
+  min-height: 80vh;
+  margin: 0 auto;
+  max-width: 900px;
+  flex-wrap: wrap;
+}
+
+.editar-perfil-card {
+  background: var(--bg);
+  border-radius: 16px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  border: 1px solid var(--border);
+  padding: 32px 24px;
+  min-width: 320px;
+  max-width: 380px;
+  flex: 1 1 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 18px;
+}
+
+.editar-perfil-title {
+  text-align: center;
+  color: var(--primary);
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.editar-perfil-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.editar-perfil-input {
+  border-radius: 8px;
+  padding: 0.7rem;
+  font-size: 1rem;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+  transition: border 0.2s;
+  &:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 0 2px var(--primary);
+  }
+}
+
+.editar-perfil-btn {
+  width: 100%;
+  padding: 0.8rem;
+  font-weight: 700;
+  border-radius: 8px;
+  color: #fff;
+  border: none;
+  margin-top: 4px;
+  cursor: pointer;
+  transition: background 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px rgba(12,192,223,0.08);
+}
+
+.editar-perfil-btn-blue {
+  background: linear-gradient(90deg, var(--accent) 60%, var(--primary) 100%);
+  &:hover {
+    background: linear-gradient(90deg, var(--accent-hover) 60%, var(--primary) 100%);
+    box-shadow: 0 4px 16px rgba(12,192,223,0.13);
+  }
+}
+
+.editar-perfil-btn-green {
+  background: linear-gradient(90deg, #43e97b 60%, #38f9d7 100%);
+  &:hover {
+    background: linear-gradient(90deg, #38f9d7 60%, #43e97b 100%);
+    box-shadow: 0 4px 16px rgba(67,233,123,0.13);
+  }
+}
+
+.editar-perfil-msg {
+  text-align: center;
+  margin-top: 8px;
+  color: #385560FF;
+  font-weight: 600;
+  font-size: 1rem;
+}
+
+@media (max-width: 900px) {
+  .editar-perfil-grid {
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+  .editar-perfil-card {
+    width: 100%;
+    max-width: 420px;
+  }
+}
+
+.editar-perfil-card {
+  background: linear-gradient(135deg, var(--bg) 80%, #f0f4fa 100%);
+  border-radius: 22px;
+  box-shadow: 0 6px 32px 0 rgba(13, 110, 253, 0.10), 0 1.5px 6px 0 rgba(0,0,0,0.04);
+  border: 2px solid var(--primary);
+  padding: 40px 32px 32px 32px;
+  min-width: 320px;
+  max-width: 400px;
+  flex: 1 1 340px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 22px;
+  transition: box-shadow 0.25s, border-color 0.2s, transform 0.18s;
+
+  &:hover {
+    box-shadow: 0 12px 40px 0 rgba(13, 110, 253, 0.18), 0 2px 8px 0 rgba(0,0,0,0.07);
+    border-color: var(--accent);
+    transform: translateY(-4px) scale(1.015);
+  }
+}
+.editar-perfil-form {
+  display: flex;
+  flex-direction: column;
+  gap: 18px; // aumenta el espacio entre elementos
+  padding-bottom: 0; // asegúrate de que no haya padding que oculte el botón
+  overflow: visible; // permite que el contenido se muestre completo
+}
+.editar-perfil-btn-blue {
+  background: linear-gradient(90deg, #1976d2 60%, #1565c0 100%);
+  &:hover {
+    background: linear-gradient(90deg, #2196f3 60%, #1976d2 100%);
+    box-shadow: 0 4px 16px rgba(25, 118, 210, 0.13);
+  }
+}
