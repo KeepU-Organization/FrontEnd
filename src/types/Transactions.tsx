@@ -5,6 +5,9 @@ export interface TransactionResponse {
     transactionDate: string;
     walletId?: string;
     walletName?: string;
+    storeType:string;
+    storeName: string;
+    giftCardCode: string;
 }
 
 export interface Transaction {
@@ -15,4 +18,10 @@ export interface Transaction {
     date: string;
     walletId?: string;
     walletName?: string;
+}
+
+export interface CreateTransferRequest {
+    senderWalletId:string;
+    receiverWalletId:string;
+    transactionAmount: number;
 }
