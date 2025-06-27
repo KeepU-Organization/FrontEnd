@@ -7,6 +7,7 @@ import { userService } from "../services/RegisterLoginService.tsx";
 interface User {
     id: number;
     name: string;
+    lastname: string;
     email: string;
     emailVerified: boolean;
     isAuthenticated: boolean;
@@ -57,6 +58,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                         const user: User = {
                             id: userData.id,
                             name: userData.name,
+                            lastname: userData.lastNames,
                             email: userData.email,
                             emailVerified: userData.isEmailVerified,
                             isAuthenticated: true,
@@ -119,6 +121,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
                 const updatedUser: User = {
                     id: userData.id,
                     name: userData.name,
+                    lastname: userData.lastNames,
                     email: userData.email,
                     emailVerified: userData.isEmailVerified,
                     isAuthenticated: true,

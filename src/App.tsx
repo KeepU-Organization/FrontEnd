@@ -19,7 +19,6 @@ import Login from "./pages/Login/Login.tsx";
 
 import EditarPerfilPadre from "./pages/editarP/EditarPerfilPadre.tsx";
 import EditarPerfilHijo from "./pages/editarH/EditarPerfilHijo.tsx";
-import EditarPerfilHijoDemo from "./pages/EditarPerfilHijoDemo.tsx";
 
 import {WalletProvider} from "./context/WalletContext.tsx";
 import ParentHistory from "./pages/loggedParent/history/ParentHistory.tsx";
@@ -57,7 +56,6 @@ const App: React.FC = () => {
                             {/* Rutas públicas */}
                             <Route path="/" element={<Home />} />
 
-                            <Route path="/editar-perfil-hijo-demo" element={<EditarPerfilHijoDemo />} />
 
                             {/* Rutas solo para usuarios no autenticados */}
                             <Route path="/signup" element={

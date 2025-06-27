@@ -1,12 +1,17 @@
 import logo from '../../assets/logo.png'
 import logoWhite from '../../assets/logo-white.png'
+import cerrar from '../../assets/cerrar.png'
+import editar from '../../assets/edit.png'
 import { Link, useNavigate } from "react-router-dom";
 import { GrayButton, YellowButton } from "../buttons/Buttons.tsx"
 import "./Navbar.scss"
 import { useTheme } from "../../ThemeContext.tsx";
-import React from "react";
+import React , { useState } from "react";
 import Switch from "../buttons/Switch.tsx";
 import { useAuth } from "../../hooks/UseAuth.tsx";
+import { Leaf } from 'lucide-react';
+
+
 
 const NavbarComponent: React.FC = () => {
     const { theme } = useTheme();
@@ -34,23 +39,77 @@ const NavbarComponent: React.FC = () => {
 
     // Componente avatar estilizado
     const UserAvatar = () => {
-        const profilePicUrl = user?.profilePicture
-            ? import.meta.env.VITE_API_URL + user.profilePicture
-            : import.meta.env.VITE_API_URL + "uploads/profilePics/default.jpg";
-        return (
-            <div className="d-flex align-items-center ms-2">
-                <img
-                    src={profilePicUrl}
-                    alt="avatar"
-                    width={32}
-                    height={32}
-                    className="rounded-circle border"
-                    style={{ objectFit: 'cover', marginRight: 8 }}
-                />
-                <span className="fw-semibold">{user?.name}</span>
-            </div>
-        );
+    const [showMenu, setShowMenu] = useState(false);
+    const profilePicUrl = user?.profilePicture
+        ? import.meta.env.VITE_API_URL + user.profilePicture
+        : import.meta.env.VITE_API_URL + "uploads/profilePics/default.jpg";
+
+    const toggleMenu = () => setShowMenu(!showMenu);
+
+   
+
+      return (
+  <div className="position-relative">
+    {/* Avatar con evento onClick */}
+    <div
+      className="d-flex align-items-center ms-2"
+      onClick={toggleMenu}
+      style={{ cursor: 'pointer' }}
+    >
+      <img
+        src={profilePicUrl}
+        alt="avatar"
+        width={32}
+        height={32}
+        className="rounded-circle border"
+        style={{ objectFit: 'cover', marginRight: 8 }}
+      />
+      <span className="fw-semibold">{user?.name}</span>
+    </div>
+
+    {/* Menú desplegable */}
+    {showMenu && (
+      <div
+        className="position-absolute p-2"
+        style={{
+          top: "100%",
+          //right: 0,
+          zIndex: 1000,
+          marginTop: "22.5px",
+          backgroundColor: " rgb(12 192 223)", // azul
+          borderRadius: "8px",
+          color: "black", // texto negro
+          minWidth: "160px",
+          boxShadow: "0 2px 6px rgba(0, 0, 0, 0.15)"
+        }}
+      >
+        <button
+          className="dropdown-item d-flex align-items-center gap-2"
+          style={{ backgroundColor: "transparent", color: "black" }}
+          onClick={() =>
+            navigate(user?.userType === "PARENT" ? "/EditarPerfilPadre" : "/EditarPerfilHijo")
+          }
+        >
+          <img src={editar} alt="Editar" width={18} height={18} />
+          Editar perfil
+        </button>
+
+        <button
+          className="dropdown-item d-flex align-items-center gap-2"
+          style={{ backgroundColor: "transparent", color: "black" }}
+          onClick={handleLogout}
+        >
+          <img src={cerrar} alt="Cerrar sesión" width={18} height={18} />
+          Cerrar sesión
+        </button>
+      </div>
+    )}
+  </div>
+);
+
+
     };
+
 
     return (
         <nav className="navbar fixed-top navbar-expand-lg" data-bs-theme={theme} style={navbarStyle}>
@@ -77,7 +136,7 @@ const NavbarComponent: React.FC = () => {
                         </li>
                     </ul>
                     {/* Derecha: Links según tipo de usuario */}
-                    <ul className="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
+                    <ul className="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center" style={{ marginLeft: "auto", marginRight: "50px" }}>
                         {!isAuthenticated && (
                             <>
                                 <li className="nav-item">
@@ -112,11 +171,12 @@ const NavbarComponent: React.FC = () => {
                                 <li className="nav-item">
                                     <UserAvatar />
                                 </li>
-                                <li className="nav-item">
+                                {/* */}
+                                {/*<li className="nav-item">
                                     <button className="btn btn-outline-danger ms-2" onClick={handleLogout}>
                                         CERRAR SESIÓN
                                     </button>
-                                </li>
+                                </li>*/}
                             </>
                         )}
                         {isAuthenticated && user?.userType === "CHILD" && (
@@ -136,11 +196,12 @@ const NavbarComponent: React.FC = () => {
                                 <li className="nav-item">
                                     <UserAvatar />
                                 </li>
-                                <li className="nav-item">
+                                
+                                {/*<li className="nav-item">
                                     <button className="btn btn-outline-danger ms-2" onClick={handleLogout}>
                                         CERRAR SESIÓN
                                     </button>
-                                </li>
+                                </li>*/}
                             </>
                         )}
                     </ul>

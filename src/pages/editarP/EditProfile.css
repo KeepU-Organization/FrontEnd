@@ -1,0 +1,84 @@
+
+.edit-profile-container:hover {
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.15);
+}
+
+
+.edit-profile-form .form-label {
+  font-weight: 500;
+  margin-top: 0.5rem;
+}
+
+.edit-profile-form input,
+.edit-profile-form select {
+  border-radius: 8px;
+  padding: 0.6rem;
+  font-size: 1rem;
+}
+
+.edit-profile-form button {
+  width: 100%;
+  padding: 0.7rem;
+  margin-top: 1rem;
+  font-weight: 600;
+  border-radius: 8px;
+  background-color: #0cc0df;
+  color: white;
+  border: none;
+  transition: background-color 0.3s ease;
+}
+
+.edit-profile-form button:hover {
+  background-color: #089cb1;
+}
+
+/* Estilo para imagen de perfil */
+.edit-profile-avatar {
+  display: block;
+  margin: 0 auto 1rem auto;
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+}
+
+/* Responsive */
+@media (max-width: 576px) {
+  .edit-profile-container {
+    margin: 1.5rem 1rem;
+    padding: 1.5rem;
+  }
+
+  .edit-profile-title {
+    font-size: 1.5rem;
+  }
+}
+
+.edit-profile-container {
+  max-width: 900px;
+  margin: 40px auto;
+  padding: 24px;
+  background-color: #f8f9fa;
+  border-radius: 12px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.edit-profile-title {
+  text-align: center;
+  padding: 30px;
+  margin-bottom: 30px;
+  color: #0d6efd;
+}
+
+.edit-profile-avatar {
+  width: 200px;
+  height: 200px;
+  object-fit: cover;
+  border-radius: 50%;
+  border: 2px solid #dee2e6;
+}
+
+.edit-profile-form label {
+  font-weight: 500;
+}
