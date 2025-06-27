@@ -1,4 +1,3 @@
-import axios from "axios";
 import React, { useState, useEffect } from "react";
 import "./EditProfile.css";
 import { Form, Button, Row, Col } from "react-bootstrap";
@@ -18,7 +17,6 @@ const EditProfilePadre: React.FC = () => {
 
   const [showPassword, setShowPassword] = useState(false); // Para mostrar contraseña
   const [errors, setErrors] = useState<string>("");
-  const [successMessage, setSuccessMessage] = useState<string>("");
   const [profileImage, setProfileImage] = useState<File | null>(null); // Para enviar al backend
   const [previewImage, setPreviewImage] = useState<string | null>(null); // Para mostrar en el frontend
 
@@ -147,11 +145,11 @@ const handleSubmit = async (e: React.FormEvent) => {
     const data = await response.json();
     console.log("Perfil actualizado correctamente:", data);
      // Mostrar mensaje
-    setSuccessMessage("Perfil actualizado correctamente.");
+    String("Perfil actualizado correctamente.");
   } catch (error) {
     console.error("Error al enviar los datos:", error);
     setErrors("Hubo un problema al actualizar el perfil.");
-    setSuccessMessage("");
+     String("");
   }
 };
 

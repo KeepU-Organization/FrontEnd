@@ -2,6 +2,9 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { Search, Calendar, DollarSign} from 'lucide-react';
 import { ParentHistoryService } from "../../../services/ParentHistoryService.tsx";
 import { useWallets } from "../../../hooks/UseWallets.tsx";
+import { TransactionResponse } from '../../../types/Transactions';
+
+
 import {
     Gamepad,
     Shirt,
@@ -15,29 +18,21 @@ import {
 import {Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import './ChildHistory.css'
-// Interfaces para los datos de la API y nuestro componente
-interface TransactionResponse {
-    amount: number;
-    description: string;
-    transactionDate: string;
-    walletId?: string;
-    walletName?: string;
-    giftCardCode:string;
-    storeName:string;
-    storeType:string;
-}
+
 
 interface Transaction {
-    id: string;
-    amount: number;
-    description: string;
-    date: string;
-    walletId?: string;
-    walletName?: string;
-    giftCardCode:string;
-    storeType: string;
-    storeName: string;
+  id: string;
+  amount: number;
+  description: string;
+  date: string;
+  walletId?: string;
+  walletName?: string;
+  giftCardCode?: string;  // opcional
+  storeType?: string;     // opcional
+  storeName?: string;     //opcional
 }
+
+
 
 const ChildHistory: React.FC = () => {
     const [typeFilter, setTypeFilter] = useState<string>('');
@@ -60,37 +55,42 @@ const ChildHistory: React.FC = () => {
 
     // Cargar transacciones de forma asíncrona
     useEffect(() => {
-        const fetchTransactions = async () => {
-            if (wallets.length > 0) {
-                try {
-                    setLoading(true);
-                    const data = await ParentHistoryService.getParentHistory(wallets[0].walletId);
+    const fetchTransactions = async () => {
+        if (wallets.length > 0) {
+            try {
+                setLoading(true);
 
-                    // Transformar TransactionResponse[] a Transaction[] con IDs generados
-                    const transformedData: Transaction[] = data.map((item: TransactionResponse, index: number) => ({
-                        id: (index + 1).toString(),
-                        amount: item.amount,
-                        description: item.description,
-                        date: item.transactionDate,
-                        walletId: item.walletId,
-                        walletName: item.walletName || 'Billetera principal' // Valor por defecto si no existe
-                        ,storeType: item.storeType,
-                        storeName: item.storeName,
-                        giftCardCode: item.giftCardCode
-                    }));
+                const data: TransactionResponse[] = await ParentHistoryService.getParentHistory(wallets[0].walletId);
 
-                    setTransactions(transformedData);
-                } catch (error) {
-                    console.error("Error al cargar transacciones:", error);
-                    setTransactions([]);
-                } finally {
-                    setLoading(false);
-                }
+               const transformedData: Transaction[] = data.map((item, index) => ({
+                id: (index + 1).toString(),
+                amount: item.amount,
+                description: item.description,
+                date: item.transactionDate,
+                walletId: item.walletId,
+                walletName: item.walletName || 'Billetera principal',
+                storeType: item.storeType ?? '',
+                storeName: item.storeName ?? '',
+                giftCardCode: item.giftCardCode ?? '',
+                type: item.transactionType
+                }));
+
+
+
+
+
+                setTransactions(transformedData);
+            } catch (error) {
+                console.error("Error al cargar transacciones:", error);
+                setTransactions([]);
+            } finally {
+                setLoading(false);
             }
-        };
+        }
+    };
 
-        fetchTransactions();
-    }, [wallets]);
+    fetchTransactions();
+}, [wallets]);
 
     const filteredTransactions = useMemo(() => {
         return transactions.filter((transaction: Transaction) => {
@@ -313,7 +313,7 @@ const ChildHistory: React.FC = () => {
                                 {filteredTransactions.map((transaction: Transaction) => (
                                     <div key={transaction.id} className="col-12 col-md-6 col-lg-4">
                                         <div
-                                            className={`card h-100 shadow-sm border-2 ${getCardBorderClass(transaction.storeType)} position-relative`}
+                                            className={`card h-100 shadow-sm border-2 ${getCardBorderClass(transaction.storeType?? '')} position-relative`}
                                             style={{
                                                 borderRadius: '1rem',
                                                 transition: 'all 0.3s ease',
@@ -333,7 +333,7 @@ const ChildHistory: React.FC = () => {
                                                 {/* Header de la transacción */}
                                                 <div className="d-flex justify-content-between align-items-center mb-3">
                                                     <div className="d-flex align-items-center">
-                                                        {getTransactionIcon(transaction.storeType)}
+                                                        {getTransactionIcon(transaction.storeType ?? '')}
                                                         <span className="fw-semibold text-dark ms-2 text-capitalize">
                                 {transaction.storeType}
                               </span>
@@ -366,7 +366,7 @@ const ChildHistory: React.FC = () => {
                                                 <div className="border-top pt-3 mt-3">
                                                     <div className="d-flex justify-content-between align-items-center">
                                                         <small className="text-muted">ID: {transaction.id}</small>
-                                                        <span className={`badge ${getTransactionBadgeClass(transaction.storeType)} px-2 py-1`}>
+                                                        <span className={`badge ${getTransactionBadgeClass(transaction.storeType ?? '')} px-2 py-1`}>
                                 {transaction.storeType}
                               </span>
                                                     </div>
@@ -376,7 +376,7 @@ const ChildHistory: React.FC = () => {
                                                             className="btn btn-sm btn-outline-primary w-100 mt-2"
                                                             onClick={(e) => {
                                                                 e.stopPropagation();
-                                                                handleShowCode(transaction.giftCardCode);
+                                                                handleShowCode(transaction.giftCardCode?? '');
                                                             }}
                                                         >
                                                             <i className="bi bi-credit-card me-1"></i>
