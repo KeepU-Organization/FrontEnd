@@ -24,7 +24,7 @@ export const PrivateRouteParent: React.FC<PrivateRouteProps> = ({ children }) =>
         return <Navigate to="/authCode" state={{ from: location }} replace />;
     }
     if (user?.userType !== "PARENT") {
-        return <Navigate to="/homeChild" state={{ from: location }} replace />;
+        return <Navigate to="/homeChildren" state={{ from: location }} replace />;
     }
 
     return <>{children}</>;
@@ -69,7 +69,7 @@ export const PublicRoute: React.FC<PublicRouteProps> = ({ children }) => {
             return <Navigate to="/homeParent"  />;}
 
         else if (user?.userType=="CHILD") {
-            return <Navigate to="/homeChild" />;
+            return <Navigate to="/homeChildren" />;
         }
     }
 
@@ -95,7 +95,7 @@ export const AuthRoute: React.FC<AuthRouteProps> = ({ children }) => {
             return <Navigate to="/homeParent"  />;}
 
         else if (user?.userType=="CHILD") {
-            return <Navigate to="/homeChild" />;
+            return <Navigate to="/homeChildren" />;
         }
     }
 
