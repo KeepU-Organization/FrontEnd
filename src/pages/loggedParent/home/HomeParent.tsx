@@ -1,6 +1,8 @@
 import {useEffect, useState} from 'react';
+
 import './HomeParent.scss'; // Importar estilos específicos si es necesario
 import Chatbot from "../../../components/Chatbot.tsx";
+import ChangeSecurityKeyModal from "../../../components/modals/ChangeSecurityKeyModal.tsx";
 
 import AddChildModal from "../../../components/modals/AddChildModal.tsx";
 import {useWallets} from "../../../hooks/UseWallets.tsx";
@@ -24,6 +26,7 @@ const HomeParent = () => {
     const [groupBy, setGroupBy] = useState<Grouping>('day');
     const [refreshTrigger, setRefreshTrigger] = useState(0);
     const [showLimitModal, setShowLimitModal] = useState(false);
+    const [showSecurityKeyModal, setShowSecurityKeyModal] = useState(false);
 
 
     const toggleAmountVisibility = () => {
@@ -142,7 +145,7 @@ const HomeParent = () => {
                     </button>
                 </div>
                 <div className="col-auto">
-                    <button className="btn btn-outline-secondary">
+                    <button className="btn btn-outline-secondary" onClick={() => setShowSecurityKeyModal(true)}>
                         Clave de Seguridad
                     </button>
                 </div>
@@ -234,6 +237,14 @@ const HomeParent = () => {
                 />
             )}
             <Chatbot />
+
+            {/* Modal para cambiar el securitycode */}
+            <ChangeSecurityKeyModal
+                show={showSecurityKeyModal}
+                onClose={() => setShowSecurityKeyModal(false)}
+                id="changeSecurityKeyModal"
+                title="Cambiar Clave de Seguridad"
+            />
         </div>
     );
 };
