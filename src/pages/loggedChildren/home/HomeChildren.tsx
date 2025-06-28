@@ -1,34 +1,27 @@
-import {useWallets} from "../../../hooks/UseWallets.tsx";
-import {useEffect, useState} from "react";
+import { useWallets } from "../../../hooks/UseWallets.tsx";
+import { useEffect, useState } from "react";
+import ChangeSecurityKeyModal from '../../../components/modals/ChangeSecurityKeyModal.tsx';
 
 const HomeChildren = () => {
-
-
     const [selectedWalletId, setSelectedWalletId] = useState<string>('');
-    const {wallets}=useWallets();
+    const { wallets } = useWallets();
     const [balance, setBalance] = useState<string>('0');
-
+    const [showSecurityKeyModal, setShowSecurityKeyModal] = useState(false);
 
     useEffect(() => {
         if (selectedWalletId) {
-            // Buscar la wallet seleccionada en el array de wallets
             const selectedWallet = wallets.find(wallet => wallet.walletId === selectedWalletId);
-
-            // Si se encuentra la wallet, actualizar el balance
             if (selectedWallet) {
                 setBalance(selectedWallet.balance);
             }
         } else if (wallets.length > 0) {
-            // Si no hay wallet seleccionada pero hay wallets disponibles, usar la primera
             setBalance(wallets[0].balance);
-            setSelectedWalletId(wallets[0].walletId); // Seleccionar automáticamente la primera
+            setSelectedWalletId(wallets[0].walletId);
         }
     }, [selectedWalletId, wallets]);
+
     return (
-
-
-
-        <div className="container-fluid p-4" style={{marginTop: '80px'}} >
+        <div className="container-fluid p-4" style={{ marginTop: '80px' }}>
             {/* Primera fila: Monto, botones */}
             <div className="row mb-4 align-items-center">
                 <div className="col-auto">
@@ -36,7 +29,12 @@ const HomeChildren = () => {
                         <span className="me-3 fw-semibold">
                             Monto: s/.{balance}
                         </span>
-
+                        <button
+                            className="btn btn-outline-secondary ms-2"
+                            onClick={() => setShowSecurityKeyModal(true)}
+                        >
+                            Clave de Seguridad
+                        </button>
                     </div>
                 </div>
                 <div className="mb-3">
@@ -55,9 +53,16 @@ const HomeChildren = () => {
                         ))}
                     </select>
                 </div>
-
             </div>
+            {/* Modal para cambiar la clave de seguridad */}
+            <ChangeSecurityKeyModal
+                show={showSecurityKeyModal}
+                onClose={() => setShowSecurityKeyModal(false)}
+                id="changeSecurityKeyModal"
+                title="Cambiar Clave de Seguridad"
+            />
         </div>
     );
-}
+};
+
 export default HomeChildren;
