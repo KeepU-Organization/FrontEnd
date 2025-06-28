@@ -29,5 +29,21 @@ export const securityKeyService = {
             console.error('Error checking security key:', error);
             throw error;
         }
+    },
+    changeSecurityKey: async (userId: string, _currentKey: string, newKey: string): Promise<any> => {
+        try {
+            const response = await apiClient.put(
+                `users/${userId}/security-key`,
+                {},
+                {
+                    params: { newSecurityKey: newKey.toString() },
+                    headers: getHeaders()
+                }
+            );
+            return response.data;
+        } catch (error) {
+            console.error('Error changing security key:', error);
+            throw error;
+        }
     }
 }
