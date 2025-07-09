@@ -18,10 +18,6 @@ const NOTICIAS = [
     { img: robloxCard, texto: "20% de descuento", alt: "Roblox" },
     { icon: "📖", texto: "Nuevo material para revisar" }
 ];
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
 
 const HomeChildren = () => {
     const [selectedWalletId, setSelectedWalletId] = useState<string>('');
@@ -107,12 +103,8 @@ const HomeChildren = () => {
                                     {medalla.img
                                         ? <img src={medalla.img} alt={medalla.nombre} className="medalla-img" />
                                         : medalla.icon}
-<<<<<<< Updated upstream
                                 </div>
                                 <div className="medalla-nombre">{medalla.nombre}</div>
-=======
-                                </div>                                <div className="medalla-nombre">{medalla.nombre}</div>
->>>>>>> Stashed changes
                                 <div className="medalla-barra">
                                     <div
                                         className="medalla-barra-progreso"
