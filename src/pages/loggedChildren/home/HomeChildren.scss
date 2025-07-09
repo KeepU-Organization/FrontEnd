@@ -1,0 +1,423 @@
+.home-children-container {
+  font-family: 'Segoe UI', 'Arial', sans-serif;
+  background: #f8fafc;
+  min-height: 100vh;
+  padding: 40px 0 32px 0;
+  color: #222;
+  transition: background 0.3s, color 0.3s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.section-wrapper {
+  width: 100%;
+  max-width: 700px;
+  margin-bottom: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* Buscador y botón de saldo */
+.search-balance-row {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  margin-bottom: 40px;
+  width: 100%;
+}
+
+.search-box {
+  position: relative;
+  width: 340px;
+  max-width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 18px 48px 18px 24px;
+  border-radius: 32px;
+  border: 2px solid #e0e0e0;
+  background: #fff;
+  font-size: 1.25rem;
+  outline: none;
+  box-shadow: 0 4px 16px rgba(180,180,180,0.10);
+  transition: background 0.3s, border 0.3s;
+}
+
+.search-input:focus {
+  border: 2px solid #ffe066;
+  background: #fffde7;
+}
+
+.search-icon {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #bdbdbd;
+  font-size: 1.5rem;
+  pointer-events: none;
+}
+
+.saldo-btn {
+  background: linear-gradient(90deg, #ffe066 60%, #ffd54f 100%);
+  color: #7c6f00;
+  border: none;
+  border-radius: 32px;
+  padding: 18px 48px;
+  font-weight: bold;
+  font-size: 1.25rem;
+  box-shadow: 0 4px 16px rgba(255, 224, 102, 0.18);
+  transition: background 0.2s, color 0.2s;
+  cursor: pointer;
+  letter-spacing: 1px;
+}
+.saldo-btn:hover {
+  background: #ffec99;
+  color: #5d5500;
+}
+
+/* Monto y selección de billetera */
+.wallet-section {
+  margin-bottom: 32px;
+}
+.wallet-row {
+  display: flex;
+  gap: 32px;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.wallet-balance-card {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.65);
+  border-radius: 18px;
+  box-shadow: 0 4px 16px rgba(25, 118, 210, 0.10);
+  padding: 18px 28px;
+  min-width: 200px;
+  gap: 14px;
+  transition: box-shadow 0.2s;
+}
+.wallet-balance-card:hover {
+  box-shadow: 0 8px 24px rgba(25, 118, 210, 0.18);
+}
+.wallet-balance-icon {
+  font-size: 2rem;
+  color: #1976d2;
+  background: #e3f2fd;
+  border-radius: 50%;
+  padding: 10px;
+  margin-right: 8px;
+}
+.wallet-balance-label {
+  font-size: 1rem;
+  color: #616161;
+  font-weight: 500;
+}
+.wallet-balance-amount {
+  font-size: 1.3rem;
+  color: #1976d2;
+  font-weight: bold;
+  margin-top: 2px;
+}
+.wallet-select-box {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-width: 180px;
+}
+.wallet-select-label {
+  font-size: 1rem;
+  color: #1976d2;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.wallet-select-label-icon {
+  font-size: 1.2rem;
+}
+.wallet-select-wrapper {
+  position: relative;
+}
+.wallet-select {
+  width: 100%;
+  border-radius: 14px;
+  border: 2px solid #e0e0e0;
+  padding: 10px 14px;
+  font-size: 1rem;
+  background: #f8fafc;
+  transition: border 0.2s, background 0.2s;
+}
+.wallet-select:focus {
+  border: 2px solid #1976d2;
+  background: #e3f2fd;
+}
+/* Sección de medallas */
+.medallas-section {
+  width: 100%;
+  margin-bottom: 48px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.medallas-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #f9a825;
+  margin-bottom: 24px;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+.medalla-img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+  display: block;
+}
+.medallas-list {
+  display: flex;
+  gap: 32px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  width: 100%;
+  justify-content: center;
+}
+
+.medalla-card {
+  background: #fffbe7;
+  border-radius: 24px;
+  box-shadow: 0 4px 16px rgba(249, 168, 37, 0.13);
+  padding: 24px 28px;
+  min-width: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  transition: box-shadow 0.2s;
+}
+
+.medalla-card.canjear {
+  border: 2.5px dashed #f9a825;
+  background: #fffde7;
+}
+
+.medalla-card:hover {
+  box-shadow: 0 8px 32px rgba(249, 168, 37, 0.22);
+}
+
+.medalla-icon {
+  font-size: 2.8rem;
+  margin-bottom: 12px;
+}
+
+.medalla-nombre {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: #7c6f00;
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.medalla-barra {
+  width: 100%;
+  height: 16px;
+  background: #f0f0f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.medalla-barra-progreso {
+  height: 100%;
+  background: linear-gradient(90deg, #ffe066 60%, #ffd54f 100%);
+  border-radius: 10px 0 0 10px;
+}
+
+/* Carrusel de noticias */
+.noticias-section {
+  margin-top: 40px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.noticias-title {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #1976d2;
+  margin-bottom: 24px;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.noticias-carrusel {
+  display: flex;
+  gap: 32px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  width: 100%;
+  justify-content: center;
+}
+
+.noticia-card {
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: 0 4px 20px rgba(25, 118, 210, 0.13);
+  padding: 28px 32px;
+  min-width: 260px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  position: relative;
+  transition: box-shadow 0.2s;
+}
+
+.noticia-card:hover {
+  box-shadow: 0 10px 32px rgba(25, 118, 210, 0.22);
+}
+
+.noticia-img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  margin-bottom: 18px;
+  border-radius: 16px;
+  background: #f8fafc;
+}
+
+.noticia-icono {
+  font-size: 2.8rem;
+  margin-bottom: 18px;
+}
+
+.noticia-texto {
+  font-size: 1.15rem;
+  color: #333;
+  margin-bottom: 18px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.noticia-flecha {
+  background: linear-gradient(90deg, #ffe066 60%, #ffd54f 100%);
+  color: #7c6f00;
+  border: none;
+  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  box-shadow: 0 2px 8px rgba(249, 168, 37, 0.15);
+  transition: background 0.2s;
+}
+.noticia-flecha:hover {
+  background: #ffec99;
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .section-wrapper {
+    max-width: 98vw;
+  }
+  .wallet-row,
+  .search-balance-row {
+    flex-direction: column;
+    gap: 24px;
+  }
+  .medallas-list,
+  .noticias-carrusel {
+    gap: 18px;
+  }
+}
+
+@media (max-width: 700px) {
+  .home-children-container {
+    padding: 12px 0 8vw 0;
+  }
+  .section-wrapper {
+    max-width: 100vw;
+    padding: 0 2vw;
+  }
+  .search-box, .wallet-balance, .wallet-select-box {
+    width: 100%;
+  }
+  .medalla-card, .noticia-card {
+    min-width: 92vw;
+  }
+}
+
+/* DARK THEME */
+body.dark-mode .home-children-container {
+  background: #181c1f;
+  color: #f3f3f3;
+}
+body.dark-mode .search-input,
+body.dark-mode .wallet-select {
+  background: #23272b;
+  color: #f3f3f3;
+  border: 2px solid #333a40;
+}
+body.dark-mode .search-input:focus,
+body.dark-mode .wallet-select:focus {
+  border: 2px solid #ffe066;
+  background: #2a2e32;
+}
+body.dark-mode .search-icon {
+  color: #ffe066;
+}
+body.dark-mode .saldo-btn {
+  background: linear-gradient(90deg, #ffe066 60%, #ffd54f 100%);
+  color: #232000;
+}
+body.dark-mode .wallet-balance {
+  background: linear-gradient(90deg, #23272b 60%, #23272b 100%);
+  border: 2px solid #ffe066;
+  color: #ffe066;
+}
+body.dark-mode .wallet-select-label {
+  color: #ffe066;
+}
+body.dark-mode .medalla-card {
+  background: #23272b;
+  box-shadow: 0 4px 16px rgba(249, 168, 37, 0.18);
+}
+body.dark-mode .medalla-card.canjear {
+  background: #23272b;
+  border: 2.5px dashed #ffe066;
+}
+body.dark-mode .medalla-nombre {
+  color: #ffe066;
+}
+body.dark-mode .medalla-barra {
+  background: #333a40;
+}
+body.dark-mode .medalla-barra-progreso {
+  background: linear-gradient(90deg, #ffe066 60%, #ffd54f 100%);
+}
+body.dark-mode .noticia-card {
+  background: #23272b;
+  box-shadow: 0 4px 20px rgba(255, 224, 102, 0.13);
+}
+body.dark-mode .noticia-img {
+  background: #181c1f;
+}
+body.dark-mode .noticia-texto {
+  color: #ffe066;
+}
+body.dark-mode .noticia-flecha {
+  background: linear-gradient(90deg, #ffe066 60%, #ffd54f 100%);
+  color: #232000;
+}

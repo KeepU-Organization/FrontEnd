@@ -1,19 +1,37 @@
 import { useWallets } from "../../../hooks/UseWallets.tsx";
 import { useEffect, useState } from "react";
-import ChangeSecurityKeyModal from '../../../components/modals/ChangeSecurityKeyModal.tsx';
+import Navbar from "../../../components/navbar/Navbar.tsx";
+import "./HomeChildren.scss";
+import robotBadge from '../../../assets/robot_badge.png';
+import dollBadge from '../../../assets/doll_badge.png';
+import premiumBadge from '../../../assets/premium_badge.png';
+import robloxCard from '../../../assets/roblox_card.png';
+
+const MEDALLAS = [
+    { img: robotBadge, nombre: "Meta Alcanzada", progreso: 60, color: "#ffd700" },
+    { img: dollBadge, nombre: "Cazador de Ofertas", progreso: 40, color: "#4dd0e1" },
+    { img: premiumBadge, nombre: "Ahorro Inteligente", progreso: 80, color: "#81c784" },
+    { icon: "🎁", nombre: "Canjear medallas", progreso: 100, color: "#f06292", canjear: true }
+];
+
+const NOTICIAS = [
+    { img: robloxCard, texto: "20% de descuento", alt: "Roblox" },
+    { icon: "📖", texto: "Nuevo material para revisar" }
+];
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
 
 const HomeChildren = () => {
     const [selectedWalletId, setSelectedWalletId] = useState<string>('');
     const { wallets } = useWallets();
     const [balance, setBalance] = useState<string>('0');
-    const [showSecurityKeyModal, setShowSecurityKeyModal] = useState(false);
 
     useEffect(() => {
         if (selectedWalletId) {
             const selectedWallet = wallets.find(wallet => wallet.walletId === selectedWalletId);
-            if (selectedWallet) {
-                setBalance(selectedWallet.balance);
-            }
+            if (selectedWallet) setBalance(selectedWallet.balance);
         } else if (wallets.length > 0) {
             setBalance(wallets[0].balance);
             setSelectedWalletId(wallets[0].walletId);
@@ -21,47 +39,115 @@ const HomeChildren = () => {
     }, [selectedWalletId, wallets]);
 
     return (
-        <div className="container-fluid p-4" style={{ marginTop: '80px' }}>
-            {/* Primera fila: Monto, botones */}
-            <div className="row mb-4 align-items-center">
-                <div className="col-auto">
-                    <div className="bg-info bg-opacity-25 border border-info rounded-pill px-4 py-2 d-flex align-items-center">
-                        <span className="me-3 fw-semibold">
-                            Monto: s/.{balance}
-                        </span>
-                        <button
-                            className="btn btn-outline-secondary ms-2"
-                            onClick={() => setShowSecurityKeyModal(true)}
-                        >
-                            Clave de Seguridad
+        <>
+            <Navbar />
+            <main className="home-children-main">
+                {/* Buscador y saldo */}
+                <section className="hc-section glass">
+                    <div className="search-balance-row">
+                        <div className="search-box">
+                            <input
+                                type="text"
+                                placeholder="Buscar..."
+                                className="search-input"
+                                aria-label="Buscar"
+                            />
+                            <span className="search-icon" aria-hidden>🔍</span>
+                        </div>
+                        <button className="saldo-btn pulse">
+                            <span role="img" aria-label="Dinero">💰</span> SALDO
                         </button>
                     </div>
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="wallet-select" className="form-label">Billetera</label>
-                    <select
-                        className="form-select"
-                        id="wallet-select"
-                        value={selectedWalletId}
-                        onChange={(e) => setSelectedWalletId(e.target.value)}
-                    >
-                        <option value="">Selecciona una billetera</option>
-                        {wallets.map(wallet => (
-                            <option key={wallet.walletId} value={wallet.walletId}>
-                                {wallet.walletType}: {wallet.walletId}
-                            </option>
+                </section>
+
+                {/* Monto y billetera */}
+                <section className="hc-section glass wallet-section">
+                    <div className="wallet-row">
+                        <div className="wallet-balance-card">
+                            <span className="wallet-balance-icon">👛</span>
+                            <div>
+                                <div className="wallet-balance-label">Monto disponible</div>
+                                <div className="wallet-balance-amount">s/. <b>{balance}</b></div>
+                            </div>
+                        </div>
+                        <div className="wallet-select-box">
+                            <label htmlFor="wallet-select" className="wallet-select-label">
+                                <span className="wallet-select-label-icon">💳</span> Selecciona tu billetera
+                            </label>
+                            <div className="wallet-select-wrapper">
+                                <select
+                                    className="wallet-select"
+                                    id="wallet-select"
+                                    value={selectedWalletId}
+                                    onChange={e => setSelectedWalletId(e.target.value)}
+                                >
+                                    <option value="">Elige una billetera</option>
+                                    {wallets.map(wallet => (
+                                        <option key={wallet.walletId} value={wallet.walletId}>
+                                            {wallet.walletType}: {wallet.walletId}
+                                        </option>
+                                    ))}
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                {/* Medallas */}
+                <section className="hc-section medallas-section glass">
+                    <h3 className="medallas-title">Medallas en progreso</h3>
+                    <div className="medallas-list">
+                        {MEDALLAS.map((medalla) => (
+                            <div
+                                className={`medalla-card${medalla.canjear ? " canjear" : ""}`}
+                                key={medalla.nombre}
+                                style={{ borderColor: medalla.color }}
+                            >
+                                <div className="medalla-icon" style={{ color: medalla.color }}>
+                                    {medalla.img
+                                        ? <img src={medalla.img} alt={medalla.nombre} className="medalla-img" />
+                                        : medalla.icon}
+<<<<<<< Updated upstream
+                                </div>
+                                <div className="medalla-nombre">{medalla.nombre}</div>
+=======
+                                </div>                                <div className="medalla-nombre">{medalla.nombre}</div>
+>>>>>>> Stashed changes
+                                <div className="medalla-barra">
+                                    <div
+                                        className="medalla-barra-progreso"
+                                        style={{
+                                            width: `${medalla.progreso}%`,
+                                            background: medalla.canjear
+                                                ? "linear-gradient(90deg,#f06292 60%,#ffd54f 100%)"
+                                                : `linear-gradient(90deg,${medalla.color} 60%,#ffd54f 100%)`
+                                        }}
+                                    />
+                                </div>
+                            </div>
                         ))}
-                    </select>
-                </div>
-            </div>
-            {/* Modal para cambiar la clave de seguridad */}
-            <ChangeSecurityKeyModal
-                show={showSecurityKeyModal}
-                onClose={() => setShowSecurityKeyModal(false)}
-                id="changeSecurityKeyModal"
-                title="Cambiar Clave de Seguridad"
-            />
-        </div>
+                    </div>
+                </section>
+
+                {/* Noticias */}
+                <section className="hc-section noticias-section glass">
+                    <h3 className="noticias-title">Noticias</h3>
+                    <div className="noticias-carrusel">
+                        {NOTICIAS.map((noticia, idx) => (
+                            <div className="noticia-card" key={idx}>
+                                {noticia.img ? (
+                                    <img src={noticia.img} alt={noticia.alt} className="noticia-img" />
+                                ) : (
+                                    <div className="noticia-icono">{noticia.icon}</div>
+                                )}
+                                <div className="noticia-texto">{noticia.texto}</div>
+                                <button className="noticia-flecha" aria-label="Ver más">&#8594;</button>
+                            </div>
+                        ))}
+                    </div>
+                </section>
+            </main>
+        </>
     );
 };
 
