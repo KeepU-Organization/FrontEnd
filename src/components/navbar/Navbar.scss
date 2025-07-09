@@ -2,3 +2,88 @@ $color-blue:"0cc0df";
 .nav{
   background-color: $color-blue;
 }
+
+// Animaciones para el colapso del navbar - SOLO EN MÓVIL
+@media (max-width: 991.98px) {
+  .navbar-collapse {
+    transition: height 0.3s ease-in-out, opacity 0.3s ease-in-out;
+    overflow: hidden;
+    background-color: inherit;
+    border-radius: 0 0 8px 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 8px;
+    padding: 1rem;
+  }
+
+  .navbar-collapse.show {
+    animation: fadeSlideDown 0.3s ease-out forwards;
+  }
+
+  .navbar-collapse:not(.show) {
+    animation: fadeSlideUp 0.3s ease-out forwards;
+  }
+
+  .navbar-nav .nav-item {
+    margin: 0.25rem 0;
+  }
+}
+
+// En desktop, asegurar que el navbar-collapse esté siempre visible
+@media (min-width: 992px) {
+  .navbar-collapse {
+    display: flex !important;
+    opacity: 1 !important;
+    transform: none !important;
+    max-height: none !important;
+    overflow: visible !important;
+  }
+
+  .navbar-collapse.collapse {
+    display: flex !important;
+  }
+}
+
+@keyframes fadeSlideDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-20px);
+    max-height: 0;
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 500px;
+  }
+}
+
+@keyframes fadeSlideUp {
+  0% {
+    opacity: 1;
+    transform: translateY(0);
+    max-height: 500px;
+  }
+  100% {
+    opacity: 0;
+    transform: translateY(-20px);
+    max-height: 0;
+  }
+}
+
+// Animación para el ícono del toggle
+.navbar-toggler {
+  transition: transform 0.2s ease-in-out;
+}
+
+.navbar-toggler:hover {
+  transform: scale(1.05);
+}
+
+.navbar-toggler[aria-expanded="true"] .navbar-toggler-icon {
+  transform: rotate(90deg);
+  transition: transform 0.3s ease-in-out;
+}
+
+.navbar-toggler[aria-expanded="false"] .navbar-toggler-icon {
+  transform: rotate(0deg);
+  transition: transform 0.3s ease-in-out;
+}

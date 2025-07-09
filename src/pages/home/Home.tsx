@@ -105,6 +105,20 @@ const Home = () => {
         return () => clearInterval(interval);
     }, []);
 
+
+    useEffect(() => {
+        // Manejar scroll al hash cuando se carga la página
+        const hash = window.location.hash;
+        if (hash) {
+            const element = document.querySelector(hash);
+            if (element) {
+                setTimeout(() => {
+                    element.scrollIntoView({ behavior: 'smooth' });
+                }, 100);
+            }
+        }
+    }, []);
+
     const colorPalettes = {
         light: {
             bg: 'linear-gradient(120deg, #e0f7fa 0%, #f5f0ec 50%, #fffde7 100%)',
@@ -378,9 +392,9 @@ const Home = () => {
         boxShadow: '0 2px 10px rgba(0,0,0,0.09)',
         padding: '1.2rem 0.7rem 1.7rem 0.7rem',
         margin: '0.5rem',
-        minWidth: '120px',
-        maxWidth: '140px',
-        minHeight: '120px',
+        minWidth: '150px', // aumentado de 120px
+        maxWidth: '170px', // aumentado de 140px
+        minHeight: '150px', // aumentado de 120px
         textAlign: 'center',
         color: colors.text,
         fontSize: '1.05rem',
@@ -393,8 +407,8 @@ const Home = () => {
     };
 
     const avatarStyle: React.CSSProperties = {
-        width: '70px',
-        height: '70px',
+        width: '90px', // aumentado de 70px
+        height: '90px', // aumentado de 70px
         borderRadius: '50%',
         objectFit: 'cover',
         marginBottom: '0.7rem',
@@ -420,12 +434,31 @@ const Home = () => {
         }
         .features-section {
           flex-direction: column;
+          align-items: center !important;
+          text-align: center !important;
           gap: 1.5rem;
+        }
+        .feature-card {
+          max-width: 100% !important;
+          width: 100% !important;
+          margin: 0 auto !important;
         }
         .faq-section {
           flex-direction: column;
           gap: 1.5rem;
           padding: 2rem 1rem;
+        }
+      }
+      @media (max-width: 768px) {
+        .features-section {
+          padding: 0 1rem;
+          flex-direction: column;
+          align-items: center !important;
+        }
+        .feature-card {
+          width: 90% !important;
+          max-width: 400px !important;
+          margin: 0 auto !important;
         }
       }
       @media (max-width: 500px) {
@@ -435,6 +468,13 @@ const Home = () => {
         }
         h1 {
           font-size: 2rem !important;
+        }
+        .features-section {
+          padding: 0 0.5rem;
+        }
+        .feature-card {
+          width: 95% !important;
+          padding: 1.5rem 1rem !important;
         }
       }
       .feature-card:hover {
@@ -626,7 +666,7 @@ const Home = () => {
                     </div>
                 </section>
                 {/* INTEGRANTES */}
-                <section style={{ ...sectionBase, background: colors.team }}>
+                <section id="nuestro-equipo" style={{ ...sectionBase, background: colors.team }}>
                     <h2 style={{ color: colors.heading2, fontSize: '1.5rem', fontWeight: 800, marginBottom: '1.2rem' }}>
                         Nuestro equipo
                     </h2>

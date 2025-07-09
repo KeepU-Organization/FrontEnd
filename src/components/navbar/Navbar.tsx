@@ -4,21 +4,104 @@ import { Link, useNavigate } from "react-router-dom";
 import { GrayButton, YellowButton } from "../buttons/Buttons.tsx"
 import "./Navbar.scss"
 import { useTheme } from "../../ThemeContext.tsx";
-import React from "react";
+import React, { useRef, useState, useEffect } from "react";
 import Switch from "../buttons/Switch.tsx";
 import { useAuth } from "../../hooks/UseAuth.tsx";
+
+// Definir el tipo para Bootstrap
+declare global {
+}
 
 const NavbarComponent: React.FC = () => {
     const { theme } = useTheme();
     const { user, isAuthenticated, isLoading, logout } = useAuth();
     const navigate = useNavigate();
+    const navbarCollapseRef = useRef<HTMLDivElement>(null);
+    const navbarToggleRef = useRef<HTMLButtonElement>(null);
+    const [isCollapsed, setIsCollapsed] = useState(true);
+
+    // Efecto para manejar clics fuera del navbar
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            const target = event.target as Node;
+
+            // No cerrar si el clic fue en el botón toggle o dentro del navbar
+            if (
+                navbarToggleRef.current?.contains(target) ||
+                navbarCollapseRef.current?.contains(target)
+            ) {
+                return;
+            }
+
+            // Solo cerrar si está abierto y el clic fue fuera
+            if (!isCollapsed) {
+                closeNavbar();
+            }
+        };
+
+        if (!isCollapsed) {
+            // Usar setTimeout para evitar que se ejecute inmediatamente después del toggle
+            const timeoutId = setTimeout(() => {
+                document.addEventListener('mousedown', handleClickOutside);
+            }, 100);
+
+            return () => {
+                clearTimeout(timeoutId);
+                document.removeEventListener('mousedown', handleClickOutside);
+            };
+        }
+
+        return () => {
+            document.removeEventListener('mousedown', handleClickOutside);
+        };
+    }, [isCollapsed]);
 
     if (isLoading) {
         return <div className="loading-spinner"></div>;
     }
+
     const handleLogout = () => {
         logout();
         navigate("/");
+        closeNavbar();
+    };
+
+    const handleNosotrosClick = () => {
+        if (window.location.pathname === '/') {
+            // Si ya estamos en home, solo hace scroll
+            const element = document.getElementById('nuestro-equipo');
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth' });
+            }
+        } else {
+            // Si no estamos en home, navega y luego hace scroll
+            navigate('/#nuestro-equipo');
+        }
+        closeNavbar();
+    };
+
+    const closeNavbar = () => {
+        setIsCollapsed(true);
+
+        if (navbarCollapseRef.current) {
+            // Usar Bootstrap si está disponible
+            if (window.bootstrap?.Collapse) {
+                const bsCollapse = new window.bootstrap.Collapse(navbarCollapseRef.current, {
+                    toggle: false
+                });
+                bsCollapse.hide();
+            }
+        }
+    };
+
+    const toggleNavbar = (event: React.MouseEvent) => {
+        event.preventDefault();
+        event.stopPropagation();
+        setIsCollapsed(!isCollapsed);
+    };
+
+    const handleNavClick = () => {
+        closeNavbar();
     };
 
     const navbarStyle = {
@@ -32,7 +115,6 @@ const NavbarComponent: React.FC = () => {
 
     const logoSrc = theme === 'dark' ? logoWhite : logo;
 
-    // Componente avatar estilizado
     const UserAvatar = () => {
         const profilePicUrl = user?.profilePicture
             ? import.meta.env.VITE_API_URL + user.profilePicture
@@ -64,35 +146,43 @@ const NavbarComponent: React.FC = () => {
                         style={{ display: 'block' }}
                     />
                 </a>
-                <button className={`navbar-toggler ${getTextClass()}`} type="button" data-bs-toggle="collapse"
-                        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button
+                    ref={navbarToggleRef}
+                    className={`navbar-toggler ${getTextClass()}`}
+                    type="button"
+                    onClick={toggleNavbar}
+                    aria-controls="navbarSupportedContent"
+                    aria-expanded={!isCollapsed}
+                    aria-label="Toggle navigation"
+                >
                     <span className="navbar-toggler-icon"></span>
                 </button>
-                <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    {/* Izquierda: Switch */}
+                <div
+                    className={`collapse navbar-collapse ${!isCollapsed ? 'show' : ''}`}
+                    id="navbarSupportedContent"
+                    ref={navbarCollapseRef}
+                >
                     <ul className="navbar-nav me-auto d-flex align-items-center">
                         <li className="nav-item">
                             <Switch />
                         </li>
                     </ul>
-                    {/* Derecha: Links según tipo de usuario */}
                     <ul className="navbar-nav ms-auto mb-2 mb-lg-0 d-flex align-items-center">
                         {!isAuthenticated && (
                             <>
                                 <li className="nav-item">
-                                    <Link to="/" className="nav-link">HOME</Link>
+                                    <Link to="/" className="nav-link" onClick={handleNavClick}>HOME</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to="/" className="nav-link">NOSOTROS</Link>
+                                    <Link to="/#nuestro-equipo" className="nav-link" onClick={handleNosotrosClick}>NOSOTROS</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to="/login" className="nav-link">
+                                    <Link to="/login" className="nav-link" onClick={handleNavClick}>
                                         <YellowButton>INICIAR SESIÓN</YellowButton>
                                     </Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to="/signup" className="nav-link">
+                                    <Link to="/signup" className="nav-link" onClick={handleNavClick}>
                                         <GrayButton>REGISTRARSE</GrayButton>
                                     </Link>
                                 </li>
@@ -101,15 +191,14 @@ const NavbarComponent: React.FC = () => {
                         {isAuthenticated && user?.userType === "PARENT" && (
                             <>
                                 <li className="nav-item">
-                                    <Link to="/homeParent" className="nav-link">HOME</Link>
+                                    <Link to="/homeParent" className="nav-link" onClick={handleNavClick}>HOME</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to="/parentHistory" className="nav-link">HISTORIAL</Link>
+                                    <Link to="/parentHistory" className="nav-link" onClick={handleNavClick}>HISTORIAL</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to="/childMonitor" className="nav-link">HIJOS</Link>
+                                    <Link to="/childMonitor" className="nav-link" onClick={handleNavClick}>HIJOS</Link>
                                 </li>
-                                {/* Aqui debe redirigirnos a la page de editarperfil de parent*/}
                                 <li className="nav-item">
                                     <Link
                                         to={
@@ -120,10 +209,10 @@ const NavbarComponent: React.FC = () => {
                                                     : "#"
                                         }
                                         className="nav-link"
+                                        onClick={handleNavClick}
                                     >
                                         <UserAvatar />
                                     </Link>
-
                                 </li>
                                 <li className="nav-item">
                                     <button className="btn btn-outline-danger ms-2" onClick={handleLogout}>
@@ -135,18 +224,17 @@ const NavbarComponent: React.FC = () => {
                         {isAuthenticated && user?.userType === "CHILD" && (
                             <>
                                 <li className="nav-item">
-                                    <Link to="/homeChildren" className="nav-link">HOME</Link>
+                                    <Link to="/homeChildren" className="nav-link" onClick={handleNavClick}>HOME</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to="/childHistory" className="nav-link">HISTORIAL</Link>
+                                    <Link to="/childHistory" className="nav-link" onClick={handleNavClick}>HISTORIAL</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to="/store" className="nav-link">TIENDA</Link>
+                                    <Link to="/store" className="nav-link" onClick={handleNavClick}>TIENDA</Link>
                                 </li>
                                 <li className="nav-item">
-                                    <Link to="/academia" className="nav-link">ACADEMIA</Link>
+                                    <Link to="/academia" className="nav-link" onClick={handleNavClick}>ACADEMIA</Link>
                                 </li>
-                                {/* Aqui debe redirigirnos a la page de editarperfil de parent*/}
                                 <li className="nav-item">
                                     <Link
                                         to={
@@ -157,6 +245,7 @@ const NavbarComponent: React.FC = () => {
                                                     : "#"
                                         }
                                         className="nav-link"
+                                        onClick={handleNavClick}
                                     >
                                         <UserAvatar />
                                     </Link>
