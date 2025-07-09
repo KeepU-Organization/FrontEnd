@@ -10,18 +10,6 @@ import { useAuth } from "../../hooks/UseAuth.tsx";
 
 // Definir el tipo para Bootstrap
 declare global {
-    interface Window {
-        bootstrap?: {
-            Collapse: new (element: HTMLElement, options?: {
-                toggle?: boolean;
-                parent?: string | HTMLElement;
-            }) => {
-                hide: () => void;
-                show: () => void;
-                toggle: () => void;
-            };
-        };
-    }
 }
 
 const NavbarComponent: React.FC = () => {
