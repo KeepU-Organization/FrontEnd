@@ -172,7 +172,8 @@ const SupervisingChildren: React.FC = () => {
             <div className="row">
                 <div className="col-md-8">
                     <div className="card shadow-sm">
-                        <div className="card-header bg-white d-flex justify-content-between align-items-center">
+                        <div className="card-header d-flex justify-content-between align-items-center"
+                             style={{ backgroundColor: 'var(--bs-card-bg)', color: 'var(--bs-body-color)' }}>
                             <h5 className="mb-0">Transacciones</h5>
                             <select
                                 className="form-select form-select-sm w-auto"
@@ -208,7 +209,8 @@ const SupervisingChildren: React.FC = () => {
 
                 <div className="col-md-4">
                     <div className="card shadow-sm mb-4">
-                        <div className="card-header bg-white">
+                        <div className="card-header"
+                             style={{ backgroundColor: 'var(--bs-card-bg)', color: 'var(--bs-body-color)' }}>
                             <h5 className="mb-0">Billeteras</h5>
                         </div>
                         <div className="card-body">
@@ -234,7 +236,8 @@ const SupervisingChildren: React.FC = () => {
                     </div>
 
                     <div className="card shadow-sm">
-                        <div className="card-header bg-white">
+                        <div className="card-header"
+                             style={{ backgroundColor: 'var(--bs-card-bg)', color: 'var(--bs-body-color)' }}>
                             <h5 className="mb-0">Resumen</h5>
                         </div>
                         <div className="card-body">

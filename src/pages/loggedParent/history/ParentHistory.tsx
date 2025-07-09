@@ -121,24 +121,25 @@ const ParentHistory: React.FC = () => {
     };
 
     return (
-        <div className="min-vh-100" style={{ background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)', marginTop:'30px'}}>
+        <div className="min-vh-100 pt-5">
             <div className="container-fluid px-4 py-5">
                 <div className="row justify-content-center">
                     <div className="col-12 col-xl-10">
+
                         {/* Título */}
                         <div className="mb-5">
-                            <h1 className="display-4 fw-bold text-dark mb-2">Movimientos</h1>
-                            <p className="lead text-muted">Gestiona y filtra tu historial de transacciones</p>
+                            <h1 className="display-4 fw-bold text-body-emphasis mb-2">Movimientos</h1>
+                            <p className="lead text-secondary-emphasis">Gestiona y filtra tu historial de transacciones</p>
                         </div>
 
-                {/* Filtros */}
+                        {/* Filtros */}
                         <div className="card shadow-sm mb-5" style={{ borderRadius: '1rem' }}>
                             <div className="card-body p-4">
                                 <div className="row g-4">
 
-                        {/* Filtro por tipo */}
+                                    {/* Filtro por tipo */}
                                     <div className="col-12 col-md-4">
-                                        <label className="form-label fw-semibold text-dark">
+                                        <label className="form-label fw-semibold text-body-emphasis">
                                             <Search size={16} className="me-2" />
                                             Tipo de Transacción
                                         </label>
@@ -154,9 +155,9 @@ const ParentHistory: React.FC = () => {
                                         </select>
                                     </div>
 
-                        {/* Filtro por fecha */}
+                                    {/* Filtro por fecha */}
                                     <div className="col-12 col-md-4">
-                                        <label className="form-label fw-semibold text-dark">
+                                        <label className="form-label fw-semibold text-body-emphasis">
                                             <Calendar size={16} className="me-2" />
                                             Filtrar por Fecha
                                         </label>
@@ -169,9 +170,9 @@ const ParentHistory: React.FC = () => {
                                         />
                                     </div>
 
-                        {/* Filtro por monto */}
+                                    {/* Filtro por monto */}
                                     <div className="col-12 col-md-4">
-                                        <label className="form-label fw-semibold text-dark">
+                                        <label className="form-label fw-semibold text-body-emphasis">
                                             <DollarSign size={16} className="me-2" />
                                             Filtrar por Monto
                                         </label>
@@ -204,100 +205,100 @@ const ParentHistory: React.FC = () => {
                             </div>
                         </div>
 
-                {/* Lista de transacciones */}
+                        {/* Lista de transacciones */}
                         <div className="d-flex justify-content-between align-items-center mb-4">
-                            <h2 className="h3 fw-semibold text-dark mb-0">
+                            <h2 className="h3 fw-semibold text-body-emphasis mb-0">
                                 Transacciones ({filteredTransactions.length})
                             </h2>
                         </div>
 
-                    {loading ? (
-                        <div className="bg-white rounded-2xl shadow-lg p-12 text-center">
-                            <p className="text-gray-500">Cargando transacciones...</p>
-                        </div>
-                    ) : filteredTransactions.length === 0 ? (
-                        <div className="card shadow-sm text-center py-5" style={{ borderRadius: '1rem' }}>
-                            <div className="card-body">
-                                <div className="text-muted mb-4">
-                                    <Search size={64} className="mx-auto d-block" />
-                                </div>
-                                <h3 className="h4 fw-semibold text-muted mb-2">
-                                    No se encontraron transacciones
-                                </h3>
-                                <p className="text-muted">
-                                    Intenta ajustar los filtros para ver más resultados
-                                </p>
+                        {loading ? (
+                            <div className="card rounded-2xl shadow-lg p-5 text-center">
+                                <p className="text-secondary">Cargando transacciones...</p>
                             </div>
-                        </div>
-                    ) : (
-                        <div className="row g-4">
-                            {filteredTransactions.map((transaction: Transaction) => (
-                                <div key={transaction.id} className="col-12 col-md-6 col-lg-4">
-                                    <div
-                                        className={`card h-100 shadow-sm border-2 ${getCardBorderClass(transaction.type)} position-relative`}
-                                        style={{
-                                            borderRadius: '1rem',
-                                            transition: 'all 0.3s ease',
-                                            cursor: 'pointer'
-                                        }}
-                                        onMouseEnter={(e) => {
-                                            e.currentTarget.style.transform = 'translateY(-5px)';
-                                            e.currentTarget.classList.add('shadow');
-                                        }}
-                                        onMouseLeave={(e) => {
-                                            e.currentTarget.style.transform = 'translateY(0)';
-                                            e.currentTarget.classList.remove('shadow');
-                                        }}
-                                    >
-                                        <div className="card-body p-4">
+                        ) : filteredTransactions.length === 0 ? (
+                            <div className="card shadow-sm text-center py-5" style={{ borderRadius: '1rem' }}>
+                                <div className="card-body">
+                                    <div className="text-secondary mb-4">
+                                        <Search size={64} className="mx-auto d-block" />
+                                    </div>
+                                    <h3 className="h4 fw-semibold text-secondary mb-2">
+                                        No se encontraron transacciones
+                                    </h3>
+                                    <p className="text-secondary">
+                                        Intenta ajustar los filtros para ver más resultados
+                                    </p>
+                                </div>
+                            </div>
+                        ) : (
+                            <div className="row g-4">
+                                {filteredTransactions.map((transaction: Transaction) => (
+                                    <div key={transaction.id} className="col-12 col-md-6 col-lg-4">
+                                        <div
+                                            className={`card h-100 shadow-sm border-2 ${getCardBorderClass(transaction.type)} position-relative`}
+                                            style={{
+                                                borderRadius: '1rem',
+                                                transition: 'all 0.3s ease',
+                                                cursor: 'pointer'
+                                            }}
+                                            onMouseEnter={(e) => {
+                                                e.currentTarget.style.transform = 'translateY(-5px)';
+                                                e.currentTarget.classList.add('shadow');
+                                            }}
+                                            onMouseLeave={(e) => {
+                                                e.currentTarget.style.transform = 'translateY(0)';
+                                                e.currentTarget.classList.remove('shadow');
+                                            }}
+                                        >
+                                            <div className="card-body p-4">
 
-                                            {/* Header de la transacción */}
-                                            <div className="d-flex justify-content-between align-items-center mb-3">
-                                                <div className="d-flex align-items-center">
-                                                    {getTransactionIcon(transaction.type)}
-                                                    <span className="fw-semibold text-dark ms-2 text-capitalize">
-                                {transaction.type}
-                              </span>
+                                                {/* Header de la transacción */}
+                                                <div className="d-flex justify-content-between align-items-center mb-3">
+                                                    <div className="d-flex align-items-center">
+                                                        {getTransactionIcon(transaction.type)}
+                                                        <span className="fw-semibold text-body-emphasis ms-2 text-capitalize">
+                                                        {transaction.type}
+                                                    </span>
+                                                    </div>
+                                                    <small className="text-secondary">
+                                                        {formatDate(transaction.date)}
+                                                    </small>
                                                 </div>
-                                                <small className="text-muted">
-                                                    {formatDate(transaction.date)}
-                                                </small>
-                                            </div>
 
-                                            {/* Información de la wallet */}
-                                            <div className="mb-3">
-                                                <small className="text-muted d-block">Wallet</small>
-                                                <h6 className="fw-semibold text-dark mb-0">
-                                                    {transaction.walletName}
-                                                </h6>
-                                            </div>
+                                                {/* Información de la wallet */}
+                                                <div className="mb-3">
+                                                    <small className="text-secondary d-block">Wallet</small>
+                                                    <h6 className="fw-semibold text-body-emphasis mb-0">
+                                                        {transaction.walletName}
+                                                    </h6>
+                                                </div>
 
-                                            {/* Monto */}
-                                            <div className="mb-3">
-                                                <small className="text-muted d-block">Monto</small>
-                                                <h4 className="fw-bold text-dark mb-0">
-                                                    ${transaction.amount.toLocaleString('es-ES', {
-                                                    minimumFractionDigits: 2,
-                                                    maximumFractionDigits: 2
-                                                })}
-                                                </h4>
-                                            </div>
+                                                {/* Monto */}
+                                                <div className="mb-3">
+                                                    <small className="text-secondary d-block">Monto</small>
+                                                    <h4 className="fw-bold text-body-emphasis mb-0">
+                                                        ${transaction.amount.toLocaleString('es-ES', {
+                                                        minimumFractionDigits: 2,
+                                                        maximumFractionDigits: 2
+                                                    })}
+                                                    </h4>
+                                                </div>
 
-                                            {/* Footer de la tarjeta */}
-                                            <div className="border-top pt-3 mt-3">
-                                                <div className="d-flex justify-content-between align-items-center">
-                                                    <small className="text-muted">ID: {transaction.id}</small>
-                                                    <span className={`badge ${getTransactionBadgeClass(transaction.type)} px-2 py-1`}>
-                                {transaction.type.toUpperCase()}
-                              </span>
+                                                {/* Footer de la tarjeta */}
+                                                <div className="border-top pt-3 mt-3">
+                                                    <div className="d-flex justify-content-between align-items-center">
+                                                        <small className="text-secondary">ID: {transaction.id}</small>
+                                                        <span className={`badge ${getTransactionBadgeClass(transaction.type)} px-2 py-1`}>
+                                                        {transaction.type.toUpperCase()}
+                                                    </span>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            ))}
-                        </div>
-                    )}
+                                ))}
+                            </div>
+                        )}
                     </div>
                 </div>
             </div>

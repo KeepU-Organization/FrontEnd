@@ -203,11 +203,13 @@ const TransferMoneyModal = ({ id, title, show = false, onClose, childId, childNa
                             aria-label="Close"
                         ></button>
                     </div>
-                    <div className="modal-body p-4">
+
+                    {/* Cuerpo del modal con fondo y texto adaptables */}
+                    <div className="modal-body p-4" style={{ backgroundColor: 'var(--bs-body-bg)', color: 'var(--bs-body-color)' }}>
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className="card mb-4 bg-light border-0">
+                            <div className="card mb-4 border-0" style={{ backgroundColor: 'var(--bs-card-bg)' }}>
                                 <div className="card-body p-3">
-                                    <h6 className="card-subtitle mb-3 text-muted">
+                                    <h6 className="card-subtitle mb-3" style={{ color: 'var(--bs-secondary-color)' }}>
                                         <i className="bi bi-wallet2 me-2"></i>Información de transferencia
                                     </h6>
 
@@ -237,7 +239,12 @@ const TransferMoneyModal = ({ id, title, show = false, onClose, childId, childNa
                                     <div className="mb-3">
                                         <label htmlFor="transactionAmount" className="form-label">Monto a transferir:</label>
                                         <div className="input-group input-group-lg">
-                                            <span className="input-group-text bg-white border-0 shadow-sm">S/.</span>
+                                        <span
+                                            className="input-group-text border-0 shadow-sm"
+                                            style={{ backgroundColor: 'var(--bs-secondary-bg)' }}
+                                        >
+                                            S/.
+                                        </span>
                                             <input
                                                 type="number"
                                                 className={`form-control border-0 shadow-sm ${errors.transactionAmount ? 'is-invalid' : ''}`}
@@ -299,6 +306,8 @@ const TransferMoneyModal = ({ id, title, show = false, onClose, childId, childNa
                     </div>
                 </div>
             </div>
+
+            {/* Toast para notificaciones */}
             <Toast
                 show={toast.show}
                 onClose={hideToast}
