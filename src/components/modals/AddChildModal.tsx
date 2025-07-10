@@ -168,7 +168,7 @@ const AddChildModal = ({ id, title, show = false, onClose }: ModalProps) => {
                     </div>
                     <div className="modal-body p-4">
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className="card mb-4 bg-light border-0">
+                            <div className="card mb-4 border-0" style={{ backgroundColor: 'var(--bs-card-bg)' }}>
                                 <div className="card-body p-3">
                                     <h6 className="card-subtitle mb-3 text-muted">
                                         <i className="bi bi-info-circle me-2"></i>Información del hijo
