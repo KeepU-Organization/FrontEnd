@@ -269,8 +269,9 @@
   background: #fff;
   border-radius: 24px;
   box-shadow: 0 4px 20px rgba(25, 118, 210, 0.13);
-  padding: 28px 32px;
+  padding: 28px 32px 60px 32px; // aumenta el padding-bottom
   min-width: 260px;
+  min-height: 220px; // asegura espacio para la flecha
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -319,7 +320,7 @@
   cursor: pointer;
   position: absolute;
   right: 24px;
-  bottom: 24px;
+  bottom: 16px; // sube un poco la flecha
   box-shadow: 0 2px 8px rgba(249, 168, 37, 0.15);
   transition: background 0.2s;
 }
@@ -356,6 +357,12 @@
   }
   .medalla-card, .noticia-card {
     min-width: 92vw;
+    padding: 20px 12px 56px 12px; // ajusta padding en móvil
+    min-height: 180px;
+  }
+  .noticia-flecha {
+    right: 12px;
+    bottom: 12px;
   }
 }
 

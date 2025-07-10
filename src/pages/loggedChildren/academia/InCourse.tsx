@@ -388,7 +388,7 @@ const CourseDetail: React.FC = () => {
             </div>
 
             {/* Contenido principal */}
-            <div className="main-content bg-white rounded shadow-sm">
+            <div className="main-content rounded shadow-sm">
                 {currentView === 'module' ? renderModuleView() : renderContentItem(selectedContentItem)}
             </div>
 
@@ -406,7 +406,7 @@ const CourseDetail: React.FC = () => {
             >
                 <Offcanvas.Header
                     closeButton
-                    className="border-bottom bg-white px-4 py-3"
+                    className="border-bottom px-4 py-3"
                     style={{ borderBottomColor: '#dee2e6 !important' }}
                 >
                     <Offcanvas.Title className="fw-bold text-primary">

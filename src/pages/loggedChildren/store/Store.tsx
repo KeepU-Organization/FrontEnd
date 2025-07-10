@@ -2,11 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useWallets } from '../../../hooks/UseWallets';
 
 import './Store.scss';
-import {useStores} from "../../../hooks/UseStores.tsx";
-import {UseGiftCards} from "../../../hooks/UseGiftCards.tsx";
+import { useStores } from "../../../hooks/UseStores.tsx";
+import { UseGiftCards } from "../../../hooks/UseGiftCards.tsx";
 import BuyModal from "../../../components/modals/BuyModal.tsx";
-import {walletService} from "../../../services/WalletService.tsx";
+import { walletService } from "../../../services/WalletService.tsx";
 
+import steamLogo from '../../../assets/steam_card.png';
+import riotLogo from '../../../assets/riot_card.png';
+import ripleyLogo from '../../../assets/ripley_card.png';
 // Interfaces
 interface Product {
     id: number;
@@ -16,9 +19,8 @@ interface Product {
     description: string;
     stock: number;
     storeId: number;
-    type:string;
+    type: string;
     link: string;
-
 }
 interface GiftCard {
     id?: number;
@@ -26,9 +28,16 @@ interface GiftCard {
     amount: number;
     code?: string;
 }
+
+
+const storeLogos: Record<number, string> = {
+    1: steamLogo,
+    2: riotLogo,
+    3: ripleyLogo,
+};
+
 const Store: React.FC = () => {
-    //const { user } = useAuth();
-    const { wallets,refreshWallets } = useWallets();
+    const { wallets, refreshWallets } = useWallets();
 
     const [products, setProducts] = useState<Product[]>([]);
     const [filteredProducts, setFilteredProducts] = useState<Product[]>([]);
@@ -38,8 +47,8 @@ const Store: React.FC = () => {
     const [loading, setLoading] = useState(false);
 
     const [showModal, setShowModal] = useState(false);
-    const {giftcards,fetchGiftCards} = UseGiftCards();
-    const {stores,fetchStores} = useStores();
+    const { giftcards, fetchGiftCards } = UseGiftCards();
+    const { stores, fetchStores } = useStores();
     const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
     useEffect(() => {
@@ -59,7 +68,7 @@ const Store: React.FC = () => {
             }
         }
         loadGiftCards();
-    }, [fetchGiftCards,giftcards.length]);
+    }, [fetchGiftCards, giftcards.length]);
 
     useEffect(() => {
         const prepareProducts = () => {
@@ -77,31 +86,26 @@ const Store: React.FC = () => {
                         giftcardsByStore[storeIdKey].push(giftcard);
                     });
 
-
                     // Crear productos para todas las tiendas
                     const newProducts: Product[] = [];
                     let productId = 1;
 
                     stores.forEach(store => {
                         const storeIdKey = String(store.id);
-                        // Colores aleatorios para las imágenes
-                        const colors = ['e9f5ff/1a73e8', 'fff5e9/e88c1a', 'f5e9ff/8c1ae8', 'e9fff5/1ae88c', 'ffe9e9/e81a1a'];
-                        const colorIndex = Math.floor(Math.random() * colors.length);
-
                         // Verificar si hay tarjetas disponibles
                         const hasStock = giftcardsByStore[storeIdKey] && giftcardsByStore[storeIdKey].length > 0;
 
-                        // Crear producto con o sin stock
+                        // Usar logo real si existe, si no, placeholder
                         newProducts.push({
                             id: productId++,
                             name: store.name,
                             price: hasStock ? parseFloat(String(giftcardsByStore[storeIdKey][0].amount)) : 0,
-                            imageUrl: `https://placehold.co/300x200/${colors[colorIndex]}?text=${encodeURIComponent(store.name)}`,
+                            imageUrl: storeLogos[store.id] || `https://placehold.co/300x200?text=${encodeURIComponent(store.name)}`,
                             description: store.location || 'Ubicación no disponible',
                             stock: hasStock ? giftcardsByStore[storeIdKey].length : 0,
                             storeId: store.id,
-                            type:store.type,
-                            link:store.link || '#'
+                            type: store.type,
+                            link: store.link || '#'
                         });
                     });
 
@@ -151,7 +155,7 @@ const Store: React.FC = () => {
     };
 
     // Manejar compra de producto
-    const handleBuyProduct = async (product: Product):Promise<boolean> => {
+    const handleBuyProduct = async (product: Product): Promise<boolean> => {
         const quantity = quantities[product.id];
         const totalPrice = product.price * quantity;
 
@@ -162,16 +166,13 @@ const Store: React.FC = () => {
             return false;
         }
         try {
-
-            console.log(`Comprando ${quantity} de ${product.name} por S/.${totalPrice.toFixed(2)} usando la billetera ${selectedWallet}`);
-
             await walletService.purchaseGiftCard({
                 walletId: selectedWallet,
                 storeId: product.storeId,
                 quantity: quantity,
                 amount: totalPrice
             });
-            
+
             // Actualizar el stock del producto
             setProducts(prevProducts =>
                 prevProducts.map(p =>
@@ -179,7 +180,7 @@ const Store: React.FC = () => {
                 )
             );
 
-        } catch(error) {
+        } catch (error) {
             console.error("Error al comprar el producto:", error);
             alert('Error al procesar la compra. Inténtalo de nuevo más tarde.');
             return false;
@@ -199,9 +200,9 @@ const Store: React.FC = () => {
             <div className="row mb-4 g-3 align-items-center">
                 <div className="col-md-6">
                     <div className="input-group shadow-sm">
-            <span className="input-group-text bg-white border-0">
-              <i className="bi bi-search"></i>
-            </span>
+                        <span className="input-group-text border-0">
+                            <i className="bi bi-search"></i>
+                        </span>
                         <input
                             type="text"
                             className="form-control border-0"
@@ -217,7 +218,7 @@ const Store: React.FC = () => {
                             <div className="d-flex justify-content-between align-items-center">
                                 <div>
                                     <select
-                                        className="form-select border-0 bg-light"
+                                        className="form-select border-0"
                                         value={selectedWallet}
                                         onChange={(e) => setSelectedWallet(e.target.value)}
                                     >
@@ -229,10 +230,10 @@ const Store: React.FC = () => {
                                     </select>
                                 </div>
                                 <div className="ms-3">
-                  <span className="fw-bold text-primary fs-5">
-                    <i className="bi bi-wallet2 me-2"></i>
-                    S/.{getSelectedWalletBalance().toFixed(2)}
-                  </span>
+                                    <span className="fw-bold text-primary fs-5">
+                                        <i className="bi bi-wallet2 me-2"></i>
+                                        S/.{getSelectedWalletBalance().toFixed(2)}
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -257,7 +258,8 @@ const Store: React.FC = () => {
                                     src={product.imageUrl}
                                     className="card-img-top p-3"
                                     alt={product.name}
-                                    onClick={()=> window.open(product.link, '_blank')}
+                                    onClick={() => window.open(product.link, '_blank')}
+                                    style={{ objectFit: 'contain', height: '200px' }}
                                 />
                                 {product.stock === 0 && (
                                     <div className="unavailable-overlay">
@@ -279,7 +281,7 @@ const Store: React.FC = () => {
                                             </button>
                                             <input
                                                 type="number"
-                                                className="form-control text-center border-0 bg-light"
+                                                className="form-control text-center border-0"
                                                 value={quantities[product.id]}
                                                 onChange={(e) => handleQuantityChange(product.id, parseInt(e.target.value) || 1)}
                                                 min="1"
@@ -300,7 +302,7 @@ const Store: React.FC = () => {
                                         </h5>
                                     </div>
                                 </div>
-                                <div className="card-footer bg-white border-0 p-3">
+                                <div className="card-footer border-0 p-3">
                                     <button
                                         className="btn btn-primary w-100"
                                         onClick={() => {
@@ -321,12 +323,10 @@ const Store: React.FC = () => {
                                             </>
                                         )}
                                     </button>
-                                    {(getSelectedWalletBalance() < product.price * quantities[product.id])?
-                                    <div className="text-danger small mt-2"> Saldo infuficiente</div>:
+                                    {(getSelectedWalletBalance() < product.price * quantities[product.id]) ?
+                                        <div className="text-danger small mt-2"> Saldo insuficiente</div> :
                                         <></>
                                     }
-
-
                                 </div>
                             </div>
                             {selectedProduct && (
@@ -336,9 +336,9 @@ const Store: React.FC = () => {
                                     onClose={() => {
                                         setShowModal(false);
                                         setSelectedProduct(null);
-                                        refreshWallets();  // Agregar paréntesis para ejecutar la función
-                                        fetchGiftCards();  // Agregar paréntesis para ejecutar la función
-                                        fetchStores();     // Agregar paréntesis para ejecutar la función
+                                        refreshWallets();
+                                        fetchGiftCards();
+                                        fetchStores();
                                     }}
                                     productName={selectedProduct.name}
                                     quantity={quantities[selectedProduct.id]}
@@ -346,7 +346,6 @@ const Store: React.FC = () => {
                                 />
                             )}
                         </div>
-
                     ))}
                 </div>
             )}

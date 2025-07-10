@@ -98,7 +98,7 @@ const CourseSelection: React.FC = () => {
             <div className="row mb-4">
                 <div className="col-md-6 mx-auto">
                     <div className="input-group shadow-sm">
-                        <span className="input-group-text bg-white border-0">
+                        <span className="input-group-text border-0">
                             <i className="bi bi-search"></i>
                         </span>
                         <input
@@ -181,7 +181,7 @@ const CourseSelection: React.FC = () => {
                                     <h5 className="card-title">{course.title}</h5>
                                     <p className="card-text">{course.description}</p>
                                 </div>
-                                <div className="card-footer bg-white border-0">
+                                <div className="card-footer border-0">
                                     <button className="btn btn-primary w-100" onClick={()=>handleNavigateToCourse(course.code)}>
                                         Ver curso
                                     </button>

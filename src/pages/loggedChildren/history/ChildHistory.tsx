@@ -14,7 +14,7 @@ import {
 } from 'lucide-react';
 import {Button, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
-import './ChildHistory.css'
+import './ChildHistory.scss'
 import {TransactionResponse} from "../../../types/Transactions.tsx";
 // Interfaces para los datos de la API y nuestro componente
 
@@ -186,14 +186,14 @@ const ChildHistory: React.FC = () => {
     };
 
     return (
-        <div className="min-vh-100" style={{ background: 'linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%)', marginTop:'30px'}}>
+        <div className="min-vh-100" style={{marginTop:'30px'}}>
             <div className="container-fluid px-4 py-5">
                 <div className="row justify-content-center">
                     <div className="col-12 col-xl-10">
                         {/* Título */}
                         <div className="mb-5">
-                            <h1 className="display-4 fw-bold text-dark mb-2">Movimientos</h1>
-                            <p className="lead text-muted">Gestiona y filtra tu historial de transacciones</p>
+                            <h1 className="display-4 fw-bold  mb-2">Movimientos</h1>
+                            <p className="lead ">Gestiona y filtra tu historial de transacciones</p>
                         </div>
 
                         {/* Filtros */}
@@ -203,7 +203,7 @@ const ChildHistory: React.FC = () => {
 
                                     {/* Filtro por tipo */}
                                     <div className="col-12 col-md-4">
-                                        <label className="form-label fw-semibold text-dark">
+                                        <label className="form-label fw-semibold">
                                             <Search size={16} className="me-2" />
                                             Tipo de Transacción
                                         </label>
@@ -227,7 +227,7 @@ const ChildHistory: React.FC = () => {
 
                                     {/* Filtro por fecha */}
                                     <div className="col-12 col-md-4">
-                                        <label className="form-label fw-semibold text-dark">
+                                        <label className="form-label fw-semibold ">
                                             <Calendar size={16} className="me-2" />
                                             Filtrar por Fecha
                                         </label>
@@ -242,7 +242,7 @@ const ChildHistory: React.FC = () => {
 
                                     {/* Filtro por monto */}
                                     <div className="col-12 col-md-4">
-                                        <label className="form-label fw-semibold text-dark">
+                                        <label className="form-label fw-semibold ">
                                             <DollarSign size={16} className="me-2" />
                                             Filtrar por Monto
                                         </label>
@@ -277,7 +277,7 @@ const ChildHistory: React.FC = () => {
 
                         {/* Lista de transacciones */}
                         <div className="d-flex justify-content-between align-items-center mb-4">
-                            <h2 className="h3 fw-semibold text-dark mb-0">
+                            <h2 className="h3 fw-semibold  mb-0">
                                 Transacciones ({filteredTransactions.length})
                             </h2>
                         </div>
