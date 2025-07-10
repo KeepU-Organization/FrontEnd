@@ -1,6 +1,7 @@
 import { useWallets } from "../../../hooks/UseWallets.tsx";
 import { useEffect, useState } from "react";
 import Navbar from "../../../components/navbar/Navbar.tsx";
+import Chatbot from "../../../components/Chatbot.tsx";
 import "./HomeChildren.scss";
 import robotBadge from '../../../assets/robot_badge.png';
 import dollBadge from '../../../assets/doll_badge.png';
@@ -139,6 +140,7 @@ const HomeChildren = () => {
                     </div>
                 </section>
             </main>
+            <Chatbot />
         </>
     );
 };
