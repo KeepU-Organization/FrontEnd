@@ -25,6 +25,10 @@ const CourseDetail: React.FC = () => {
     const [currentOptions, setCurrentOptions] = useState<QuizOptionsResponse[] | null>(null);
     const [selectedOption, setSelectedOption] = useState<string | null>(null);
 
+    const articleIntro = `“Ahorrar es guardar poco a poco tu dinero (como un tesoro) para usarlo después en algo importante o para estar listo si pasa una emergencia. Es como llenar una alcancía: cada moneda que guardes hoy te ayudará mañana.”`;
+
+    const [showFullArticle, setShowFullArticle] = useState(false);
+
     // Cargar módulos cuando cambia el courseCode
     useEffect(() => {
         const loadModules = async () => {
@@ -292,10 +296,40 @@ const CourseDetail: React.FC = () => {
                             return (
                                 <>
                                     <h1 className="mb-3">{contentItem.title}</h1>
-                                    <div
-                                        className="content-article"
-                                        dangerouslySetInnerHTML={{ __html: contentItem.contentData }}
-                                    />
+
+                                    {/* Intro educativa */}
+                                    <div className="alert alert-secondary fs-6">
+                                        {articleIntro}
+                                    </div>
+
+                                    {/* Contenido resumido con botón Ver más */}
+                                    {!showFullArticle ? (
+                                        <>
+                                            <div
+                                                className="content-article text-muted"
+                                                dangerouslySetInnerHTML={{ __html: contentItem.contentData.slice(0, 300) + '...' }}
+                                            />
+                                            <button
+                                                className="btn btn-outline-primary mt-3"
+                                                onClick={() => setShowFullArticle(true)}
+                                            >
+                                                Ver más
+                                            </button>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <div
+                                                className="content-article"
+                                                dangerouslySetInnerHTML={{ __html: contentItem.contentData }}
+                                            />
+                                            <button
+                                                className="btn btn-outline-secondary mt-3"
+                                                onClick={() => setShowFullArticle(false)}
+                                            >
+                                                Ver menos
+                                            </button>
+                                        </>
+                                    )}
                                 </>
                             );
                         case 'VIDEO':
