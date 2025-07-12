@@ -29,10 +29,23 @@ const ChildrenSign = () => {
     });
     const password=watch('password')
 
+    // Función para validar la contraseña y devolver el estado de cada requisito
+    const getPasswordValidation = (password: string) => {
+        const hasMinLength = password?.length >= 8;
+        const hasNumber = /[0-9]/.test(password);
+
+        return {
+            hasMinLength,
+            hasNumber,
+            isValid: hasMinLength && hasNumber
+        };
+    };
+
+    const passwordValidation = getPasswordValidation(password || '');
+
     const onSubmit = async (data:formData) => {
         setIsLoading(true);
         try {
-            // Agregar await aquí para esperar que termine el registro
             const response = await userService.registerChild({
                 email: data.email,
                 password: data.password,
@@ -41,10 +54,8 @@ const ChildrenSign = () => {
 
             console.log('respuesta del registro: ', response);
 
-            // Agregar un pequeño retraso para asegurar que el backend procese el registro
             await new Promise(resolve => setTimeout(resolve, 500));
 
-            // Intentar iniciar sesión después del registro exitoso
             await login(data.email, data.password);
         }
         catch(error: unknown) {
@@ -97,7 +108,7 @@ const ChildrenSign = () => {
                             )}
                         </div>
 
-                        <div className="mb-3 form-floating">
+                        <div className="mb-3 form-floating position-relative">
                             <input
                                 type="password"
                                 id="password"
@@ -115,15 +126,41 @@ const ChildrenSign = () => {
                                         message: 'La contraseña no debe exceder los 20 caracteres'
                                     },
                                     pattern: {
-                                        value: /^(?=.*[A-Za-z])(?=.*\d).{8,}$/,
+                                        value: /^(?=.*[0-9]).{8,}$/,
                                         message: 'La contraseña debe contener al menos una letra y un número'
                                     }
                                 })}
                             />
                             <label htmlFor="password" className="form-label">Contraseña</label>
+
+                            {/* Tooltip dinámico de validación */}
+                            {password && (
+                                <div className="password-tooltip position-absolute"
+                                     style={{
+                                         top: '100%',
+                                         left: '0',
+                                         zIndex: 1000,
+                                         marginTop: '5px'
+                                     }}>
+                                    <div className="card shadow-sm border-0" style={{ minWidth: '250px' }}>
+                                        <div className="card-body p-2">
+                                            <div className="small">
+                                                <div className={`d-flex align-items-center mb-1 ${passwordValidation.hasMinLength ? 'text-success' : 'text-danger'}`}>
+                                                    <i className={`bi ${passwordValidation.hasMinLength ? 'bi-check-circle-fill' : 'bi-x-circle-fill'} me-2`}></i>
+                                                    Mínimo 8 caracteres ({password.length}/8)
+                                                </div>
+                                                <div className={`d-flex align-items-center ${passwordValidation.hasNumber ? 'text-success' : 'text-danger'}`}>
+                                                    <i className={`bi ${passwordValidation.hasNumber ? 'bi-check-circle-fill' : 'bi-x-circle-fill'} me-2`}></i>
+                                                    Al menos un número
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            )}
+
                             <div id="passwordHelpBlock" className="form-text">
-                                Tu contraseña debe tener entre 8 y 20 caracteres, contener letras y números, y no debe tener espacios,
-                                caracteres especiales o emojis.
+                                Tu contraseña debe tener entre 8 y 20 caracteres, contener letras y números.
                             </div>
                             {errors.password && (
                                 <div className="invalid-feedback">{errors.password.message}</div>
@@ -134,7 +171,7 @@ const ChildrenSign = () => {
                             <input
                                 type="password"
                                 id="confirmPassword"
-                                className={`form-control ${errors.password ? 'is-invalid' : ''}`}
+                                className={`form-control ${errors.confirmPassword ? 'is-invalid' : ''}`}
                                 aria-describedby="confirmPasswordHelpBlock"
                                 placeholder=" "
                                 {...register('confirmPassword', {
@@ -160,8 +197,6 @@ const ChildrenSign = () => {
                             )
                         }
 
-
-                        {/* Componente de código de verificación */}
                         <div className="mb-4">
                             <label className="form-label">Código de verificación</label>
                             <div className="mb-2">
@@ -189,7 +224,6 @@ const ChildrenSign = () => {
                             <div className="form-text">
                                 Ingresa el código de registro que generaron tus padres.
                             </div>
-
                         </div>
 
                         <div className="d-flex justify-content-between align-items-center mt-4">
@@ -212,9 +246,3 @@ const ChildrenSign = () => {
     )
 }
 export default ChildrenSign;
-
-//{verificationMessage && (
-//    <div className="alert alert-info mt-2 py-2 text-center">
-//        {verificationMessage}
-//    </div>
-//)}

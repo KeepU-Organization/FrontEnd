@@ -24,7 +24,6 @@ const AdultSign = () => {
     const [apiError, setApiError] = useState<string | null>(null);
     const {login}=useAuth();
 
-
     // Configuración de react-hook-form
     const {
         register,
@@ -37,6 +36,20 @@ const AdultSign = () => {
 
     // La contraseña actual para compararla con la confirmación
     const password = watch('password');
+
+    // Función para validar la contraseña y devolver el estado de cada requisito
+    const getPasswordValidation = (password: string) => {
+        const hasMinLength = password?.length >= 8;
+        const hasNumber = /[0-9]/.test(password);
+
+        return {
+            hasMinLength,
+            hasNumber,
+            isValid: hasMinLength && hasNumber
+        };
+    };
+
+    const passwordValidation = getPasswordValidation(password || '');
 
     // Función que se ejecuta cuando el formulario es válido
     const onSubmit = async  (data: FormData) => {
@@ -69,7 +82,7 @@ const AdultSign = () => {
                 setApiError('Ha ocurrido un error durante el registro');
             }
         }
-         finally {
+        finally {
             setIsLoading(false);
         }
 
@@ -145,7 +158,7 @@ const AdultSign = () => {
                             <div className="invalid-feedback">{errors.email.message}</div>
                         )}
                     </div>
-                    <div className="mb-3 form-floating">
+                    <div className="mb-3 form-floating position-relative">
                         <input
                             type="password"
                             id="password"
@@ -163,15 +176,41 @@ const AdultSign = () => {
                                     message: 'La contraseña no debe exceder los 20 caracteres'
                                 },
                                 pattern: {
-                                    value: /^(?=.*[A-Za-z])(?=.*\d).{8,}$/,
+                                    value: /^(?=.*[0-9]).{8,}$/,
                                     message: 'La contraseña debe contener al menos una letra y un número'
                                 }
                             })}
                         />
                         <label htmlFor="password" className="form-label">Contraseña</label>
+
+                        {/* Tooltip dinámico de validación */}
+                        {password && (
+                            <div className="password-tooltip position-absolute"
+                                 style={{
+                                     top: '100%',
+                                     left: '0',
+                                     zIndex: 1000,
+                                     marginTop: '5px'
+                                 }}>
+                                <div className="card shadow-sm border-0" style={{ minWidth: '250px' }}>
+                                    <div className="card-body p-2">
+                                        <div className="small">
+                                            <div className={`d-flex align-items-center mb-1 ${passwordValidation.hasMinLength ? 'text-success' : 'text-danger'}`}>
+                                                <i className={`bi ${passwordValidation.hasMinLength ? 'bi-check-circle-fill' : 'bi-x-circle-fill'} me-2`}></i>
+                                                Mínimo 8 caracteres ({password.length}/8)
+                                            </div>
+                                            <div className={`d-flex align-items-center ${passwordValidation.hasNumber ? 'text-success' : 'text-danger'}`}>
+                                                <i className={`bi ${passwordValidation.hasNumber ? 'bi-check-circle-fill' : 'bi-x-circle-fill'} me-2`}></i>
+                                                Al menos un número
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
                         <div id="passwordHelpBlock" className="form-text">
-                            Tu contraseña debe tener entre 8 y 20 caracteres, contener letras y números, y no debe tener espacios,
-                            caracteres especiales o emojis.
+                            Tu contraseña debe tener entre 8 y 20 caracteres, contener letras y números.
                         </div>
                         {errors.password && (
                             <div className="invalid-feedback">{errors.password.message}</div>
@@ -198,7 +237,6 @@ const AdultSign = () => {
                             <div className="invalid-feedback">{errors.confirmPassword.message}</div>
                         )}
                     </div>
-
 
                     {apiError && (
                         <div className="alert alert-danger" role="alert">
